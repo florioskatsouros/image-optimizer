@@ -13,7 +13,7 @@
 
 🎯 **The FREE image optimization tool that reduces file sizes up to 90% without losing quality**
 
-[🚀 Quick Start](#-quick-start-30-seconds) • [🎮 Try It Locally](#-try-it-locally) • [📖 Documentation](#-complete-setup-guide)
+[🚀 Quick Start](#-quick-start-30-seconds) • [🎮 Try It Locally](#-try-it-locally) 
 
 </div>
 
@@ -631,8 +631,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## ⭐ Show Your Support
 
 If this project helped you optimize your images, please give it a ⭐ on GitHub!
-
-[![GitHub stars](https://img.shields.io/github/stars/florioskatsouros/image-optimizer?style=social)](https://github.com/florioskatsouros/image-optimizer/stargazers)
 
 
 ---
