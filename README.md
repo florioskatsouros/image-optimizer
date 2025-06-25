@@ -3,7 +3,7 @@
 # 🎨 Image Optimizer Pro
 
 [![Free Alternative](https://img.shields.io/badge/🆓%20FREE%20Alternative%20to-TinyPNG%20%26%20ImageOptim-brightgreen?style=for-the-badge)](https://github.com/florioskatsouros/image-optimizer)
-[![GitHub Stars](https://img.shields.io/github/stars/florioskatsouros/image-optimizer?style=for-the-badge&color=yellow&label=STARS)](https://github.com/florioskatsouros/image-optimizer/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/florioskatsouros/gdpr-cookie-consent?style=for-the-badge&color=yellow&label=STARS)](https://github.com/florioskatsouros/gdpr-cookie-consent/stargazers)
 
 [![Bundle Size](https://img.shields.io/badge/SIZE-200KB-brightgreen?style=for-the-badge)](https://github.com/florioskatsouros/image-optimizer)
 [![Dependencies](https://img.shields.io/badge/DEPENDENCIES-1-success?style=for-the-badge)](https://github.com/florioskatsouros/image-optimizer)
