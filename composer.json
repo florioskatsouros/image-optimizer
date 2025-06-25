@@ -1,0 +1,117 @@
+{
+    "name": "image-optimizer/pro",
+    "description": "🎨 Modern Image Optimizer - Compress & optimize images with beautiful drag & drop interface. Progressive JPEG, WebP, AVIF support with advanced caching.",
+    "type": "project",
+    "keywords": [
+        "image",
+        "optimizer",
+        "compression",
+        "webp",
+        "avif",
+        "progressive-jpeg",
+        "jpeg",
+        "png",
+        "optimization",
+        "drag-drop",
+        "batch-processing",
+        "tinypng-alternative",
+        "self-hosted",
+        "privacy-first"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Your Name",
+            "email": "your.email@domain.com",
+            "homepage": "https://github.com/yourusername",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/yourusername/image-optimizer",
+    "support": {
+        "issues": "https://github.com/yourusername/image-optimizer/issues",
+        "source": "https://github.com/yourusername/image-optimizer",
+        "docs": "https://github.com/yourusername/image-optimizer#readme"
+    },
+    "require": {
+        "php": "^8.0",
+        "ext-gd": "*",
+        "ext-fileinfo": "*",
+        "ext-zip": "*",
+        "ext-json": "*",
+        "intervention/image": "^2.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "squizlabs/php_codesniffer": "^3.6",
+        "phpstan/phpstan": "^1.0"
+    },
+    "suggest": {
+        "ext-imagick": "For better image processing performance and additional format support",
+        "ext-webp": "For WebP format support (usually included in GD)",
+        "ext-avif": "For AVIF format support (requires PHP 8.1+)",
+        "ext-opcache": "For better PHP performance",
+        "ext-apcu": "For caching and better performance"
+    },
+    "autoload": {
+        "psr-4": {
+            "ImageOptimizer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ImageOptimizer\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html coverage",
+        "cs-check": "phpcs --standard=PSR12 src/",
+        "cs-fix": "phpcbf --standard=PSR12 src/",
+        "analyse": "phpstan analyse src/ --level=max",
+        "check-all": [
+            "@cs-check",
+            "@analyse",
+            "@test"
+        ],
+        "post-install-cmd": [
+            "@php -r \"if (!is_dir('uploads')) mkdir('uploads', 0755, true);\"",
+            "@php -r \"if (!is_dir('optimized')) mkdir('optimized', 0755, true);\"",
+            "@php -r \"if (!is_dir('temp')) mkdir('temp', 0755, true);\"",
+            "@php -r \"if (!is_dir('logs')) mkdir('logs', 0755, true);\"",
+            "@php -r \"echo 'Image Optimizer Pro installed successfully!\\n';\"",
+            "@php -r \"echo 'Please check README.md for setup instructions.\\n';\""
+        ],
+        "post-update-cmd": [
+            "@php -r \"echo 'Image Optimizer Pro updated successfully!\\n';\""
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true
+        },
+        "platform-check": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0-dev"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "archive": {
+        "exclude": [
+            "tests",
+            "docs",
+            ".github",
+            ".gitignore",
+            "phpunit.xml",
+            "uploads/*",
+            "optimized/*",
+            "temp/*",
+            "logs/*"
+        ]
+    }
+}
