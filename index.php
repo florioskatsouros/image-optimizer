@@ -15,7 +15,8 @@ $supportedFormats = implode(', ', $optimizer->getSupportedFormats());
     <title>🎨 Image Optimizer Pro - Compress Images Online</title>
     <meta name="description" content="Optimize and compress your images online. Reduce file size up to 90% without losing quality. Support for JPG, PNG, WebP formats.">
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
+    <link rel="icon" href="/assets/images/logo.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/images/logo.ico" type="image/x-icon">
 </head>
 <body>
     <div class="container">
