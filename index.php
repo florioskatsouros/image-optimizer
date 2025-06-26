@@ -5,16 +5,646 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎨 Image Optimizer Pro - Optimize & Convert Images</title>
     <meta name="description" content="Optimize and convert your images online. Support for 20+ formats including HEIC, RAW, PSD. Reduce file size up to 90% without losing quality.">
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/enhanced-styles.css">
-    <link rel="icon" href="/assets/images/logo.ico" type="image/x-icon">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    <style>
+        /* ============================================
+           🎨 Enhanced Image Optimizer Pro - Modern CSS
+           ============================================ */
+
+        :root {
+            /* Color Palette */
+            --primary-color: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #4ade80;
+            --warning-color: #fbbf24;
+            --error-color: #f87171;
+            
+            /* Neutrals */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            
+            /* Typography */
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            
+            /* Borders & Radius */
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+            --border-width: 1px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* Animations */
+            --transition-fast: 150ms ease-in-out;
+            --transition-normal: 300ms ease-in-out;
+            --transition-slow: 500ms ease-in-out;
+        }
+
+        /* ============================================
+           🎯 Base Styles
+           ============================================ */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        /* ============================================
+           🏠 Header
+           ============================================ */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-xl) 0;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .logo h1 {
+            font-size: var(--font-size-3xl);
+            font-weight: 800;
+            color: white;
+            margin-bottom: var(--space-xs);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            object-fit: cover;
+        }
+
+        .tagline {
+            font-size: var(--font-size-lg);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .stats {
+            display: flex;
+            gap: var(--space-xl);
+        }
+
+        .stat {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: var(--font-size-sm);
+            opacity: 0.9;
+        }
+
+        /* ============================================
+           📤 Main Content
+           ============================================ */
+
+        .main-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            margin-bottom: var(--space-2xl);
+        }
+
+        /* ============================================
+           🔄 Enhanced Mode Toggle
+           ============================================ */
+
+        .mode-toggle-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: var(--space-xl);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-toggle-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            pointer-events: none;
+        }
+
+        .mode-toggle-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .mode-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .mode-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            border-radius: var(--border-radius-lg);
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+        }
+
+        .mode-option.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .mode-icon {
+            font-size: var(--font-size-3xl);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .mode-label {
+            color: white;
+            font-weight: 600;
+            font-size: var(--font-size-lg);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-sublabel {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: var(--font-size-sm);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Animated Toggle Switch */
+        .toggle-switch-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 4px;
+            width: 80px;
+            height: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .toggle-switch {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            transition: transform var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .toggle-switch.convert-mode {
+            transform: translateX(40px);
+        }
+
+        .mode-description {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: var(--font-size-base);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ============================================
+           📁 Upload Section
+           ============================================ */
+
+        .upload-section {
+            padding: var(--space-2xl);
+        }
+
+        .upload-zone {
+            border: 3px dashed var(--gray-300);
+            border-radius: var(--border-radius-lg);
+            padding: var(--space-2xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            background: var(--gray-50);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .upload-zone.drag-over {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            color: var(--gray-400);
+            margin-bottom: var(--space-md);
+            transition: all var(--transition-normal);
+            font-size: 64px;
+        }
+
+        .upload-zone:hover .upload-icon {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .upload-zone h2 {
+            font-size: var(--font-size-2xl);
+            color: var(--gray-700);
+            margin-bottom: var(--space-sm);
+            font-weight: 600;
+        }
+
+        .upload-zone p {
+            font-size: var(--font-size-lg);
+            color: var(--gray-500);
+            margin-bottom: var(--space-lg);
+        }
+
+        .browse-text {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .upload-info {
+            margin-top: var(--space-lg);
+        }
+
+        .upload-info p {
+            font-size: var(--font-size-sm);
+            color: var(--gray-600);
+            margin-bottom: var(--space-xs);
+        }
+
+        /* ============================================
+           ⚙️ Options Panel
+           ============================================ */
+
+        .options-panel {
+            margin-top: var(--space-2xl);
+            padding: var(--space-xl);
+            background: var(--gray-50);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        .options-panel h3 {
+            font-size: var(--font-size-xl);
+            color: var(--gray-800);
+            margin-bottom: var(--space-lg);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .option-group label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: var(--space-sm);
+        }
+
+        .quality-slider {
+            margin-top: var(--space-sm);
+        }
+
+        .quality-slider input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--gray-200);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .quality-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+        }
+
+        .quality-slider input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .quality-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-sm);
+            font-size: var(--font-size-xs);
+            color: var(--gray-500);
+        }
+
+        #qualityValue {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: var(--border-width) solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-base);
+            transition: all var(--transition-fast);
+            background: white;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+        }
+
+        .checkbox input[type="checkbox"] {
+            width: auto;
+            margin-right: var(--space-sm);
+            accent-color: var(--primary-color);
+        }
+
+        /* ============================================
+           🎯 Buttons
+           ============================================ */
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left var(--transition-normal);
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-50);
+            transform: translateY(-1px);
+        }
+
+        /* ============================================
+           📱 Responsive Design
+           ============================================ */
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--space-md);
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: var(--space-lg);
+                text-align: center;
+            }
+            
+            .stats {
+                justify-content: center;
+            }
+            
+            .logo h1 {
+                font-size: var(--font-size-2xl);
+            }
+            
+            .upload-zone {
+                padding: var(--space-lg);
+            }
+            
+            .upload-zone h2 {
+                font-size: var(--font-size-xl);
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mode-toggle-wrapper {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            
+            .toggle-switch-container {
+                order: -1;
+            }
+        }
+
+        /* ============================================
+           🎭 Animations
+           ============================================ */
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Hidden panels */
+        .convert-panel {
+            display: none;
+        }
+
+        .convert-panel.active {
+            display: block;
+        }
+
+        .optimize-panel.hidden {
+            display: none !important;
+        }
+
+        /* Format support badges */
+        .format-badge {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .format-badge.experimental {
+            background: var(--warning-color);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
             <div class="logo">
-                <h1 class="title-with-logo">
-                    <img src="assets/images/logo.jpg" alt="Image Optimizer Logo" class="inline-logo">
+                <h1>
+                    <img src="assets/images/logo.jpg" alt="Image Optimizer Logo" class="logo-icon">
                     Image Optimizer Pro
                 </h1>
                 <p class="tagline">Optimize & Convert images - 20+ formats supported</p>
@@ -36,46 +666,43 @@
         </header>
 
         <main class="main-content">
-            <!-- Mode Toggle Section -->
+            <!-- Enhanced Mode Toggle Section -->
             <section class="mode-toggle-section">
-                <div class="mode-toggle">
-                    <div class="mode-labels">
-                        <div class="mode-label active" id="optimizeLabel">
-                            <span>⚡</span>
-                            <span>Optimize</span>
+                <div class="mode-toggle-container">
+                    <div class="mode-toggle-wrapper">
+                        <div class="mode-option active" id="optimizeMode" onclick="setMode('optimize')">
+                            <div class="mode-icon">⚡</div>
+                            <div class="mode-label">Optimize</div>
+                            <div class="mode-sublabel">Compress & reduce file size</div>
                         </div>
                         
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="modeToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
+                        <div class="toggle-switch-container" onclick="toggleMode()">
+                            <div class="toggle-switch" id="toggleSwitch">
+                                <span id="toggleIcon">⚡</span>
+                            </div>
+                        </div>
                         
-                        <div class="mode-label" id="convertLabel">
-                            <span>🔄</span>
-                            <span>Convert</span>
+                        <div class="mode-option" id="convertMode" onclick="setMode('convert')">
+                            <div class="mode-icon">🔄</div>
+                            <div class="mode-label">Convert</div>
+                            <div class="mode-sublabel">Change format & transform</div>
                         </div>
                     </div>
+                    <p class="mode-description" id="modeDescription">
+                        Compress images while maintaining quality. Supports JPG, PNG, WebP, AVIF, HEIC, RAW, and more.
+                    </p>
                 </div>
-                <p class="mode-description" id="modeDescription">
-                    Compress images while maintaining quality. Supports JPG, PNG, WebP, AVIF, HEIC, RAW, and more.
-                </p>
             </section>
 
             <!-- Upload Section -->
             <section class="upload-section" id="uploadSection">
                 <div class="upload-zone" id="uploadZone">
-                    <div class="upload-icon">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                            <circle cx="8.5" cy="8.5" r="1.5"/>
-                            <polyline points="21,15 16,10 5,21"/>
-                        </svg>
-                    </div>
-                    <h2>Drop your images here</h2>
+                    <div class="upload-icon">🖼️</div>
+                    <h2 id="uploadTitle">Drop your images here</h2>
                     <p>or <span class="browse-text">click to browse</span></p>
                     <div class="upload-info">
-                        <p>✅ Supported: <span id="supportedFormatsList">JPG, PNG, WebP, GIF, AVIF, HEIC, RAW, PSD, TIFF, BMP</span></p>
-                        <p>✅ Max size: <span id="maxFileSize">100MB</span> per image</p>
+                        <p>✅ Supported: <strong>JPG, PNG, WebP, GIF, AVIF, HEIC, RAW, PSD, TIFF, BMP</strong></p>
+                        <p>✅ Max size: <strong>100MB</strong> per image</p>
                         <p>✅ Batch upload supported</p>
                     </div>
                     <input type="file" id="fileInput" multiple accept="image/*,.heic,.heif,.psd,.raw,.cr2,.nef,.orf,.arw,.dng,.tiff,.tif" hidden>
@@ -107,7 +734,7 @@
                                 <option value="800">800px (Mobile)</option>
                                 <option value="custom">Custom...</option>
                             </select>
-                            <input type="number" id="customWidth" placeholder="Custom width" style="display: none;">
+                            <input type="number" id="customWidth" placeholder="Custom width" style="display: none; margin-top: 8px;">
                         </div>
 
                         <div class="option-group">
@@ -119,7 +746,7 @@
                                 </label>
                                 <label class="checkbox">
                                     <input type="checkbox" id="createAvif">
-                                    <span>AVIF (50% smaller) <span class="format-support-badge experimental">Beta</span></span>
+                                    <span>AVIF (50% smaller) <span class="format-badge experimental">Beta</span></span>
                                 </label>
                                 <label class="checkbox">
                                     <input type="checkbox" id="createThumbnail" checked>
@@ -131,415 +758,710 @@
                 </div>
 
                 <!-- Convert Options Panel -->
-                <div class="convert-panel" id="convertPanel" style="display: none;">
+                <div class="options-panel convert-panel" id="convertPanel">
                     <h3>🔄 Conversion Options</h3>
                     
-                    <div class="format-section">
-                        <h4>Output Format</h4>
-                        <div class="format-toggle">
-                            <input type="radio" id="singleFormat" name="convertMode" value="single" checked>
-                            <label for="singleFormat">Convert to single format</label>
+                    <div class="options-grid">
+                        <div class="option-group">
+                            <label for="outputFormat">Convert to Format</label>
+                            <select id="outputFormat">
+                                <option value="">Select output format</option>
+                                <optgroup label="Web Formats">
+                                    <option value="jpg">JPEG (.jpg)</option>
+                                    <option value="png">PNG (.png)</option>
+                                    <option value="webp">WebP (.webp)</option>
+                                    <option value="avif">AVIF (.avif)</option>
+                                </optgroup>
+                                <optgroup label="Print Formats">
+                                    <option value="tiff">TIFF (.tiff)</option>
+                                    <option value="bmp">Bitmap (.bmp)</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="gif">GIF (.gif)</option>
+                                    <option value="ico">Icon (.ico)</option>
+                                </optgroup>
+                            </select>
                         </div>
-                        <div class="format-toggle">
-                            <input type="checkbox" id="convertToMultiple">
-                            <label for="convertToMultiple">Convert to multiple formats</label>
+
+                        <div class="option-group">
+                            <label for="convertQuality">Quality (for lossy formats)</label>
+                            <div class="quality-slider">
+                                <input type="range" id="convertQuality" min="20" max="100" value="80">
+                                <div class="quality-labels">
+                                    <span>Small</span>
+                                    <span id="convertQualityValue">80%</span>
+                                    <span>Original</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Single Format Selection -->
-                    <div class="format-section">
-                        <select id="outputFormat">
-                            <option value="">Select output format</option>
-                            <!-- Options will be populated by JavaScript -->
-                        </select>
-                    </div>
-
-                    <!-- Multiple Format Selection -->
-                    <div class="format-section" id="selectedFormats" style="display: none;">
-                        <!-- Format checkboxes will be populated by JavaScript -->
-                    </div>
-
-                    <!-- Format Preview -->
-                    <div class="format-preview" id="formatPreview">
-                        <p>Select an output format above</p>
-                    </div>
-
-                    <div class="option-group">
-                        <label for="convertQuality">Quality for lossy formats</label>
-                        <div class="quality-slider">
-                            <input type="range" id="convertQuality" min="20" max="100" value="80">
-                            <div class="quality-labels">
-                                <span>Small</span>
-                                <span id="convertQualityValue">80%</span>
-                                <span>Original</span>
+                        <div class="option-group">
+                            <label>Additional Options</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="convertMultiple">
+                                    <span>Create multiple formats</span>
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" id="convertThumbnail">
+                                    <span>Create thumbnail</span>
+                                </label>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- File Preview will be inserted here by JavaScript -->
-            </section>
-
-            <!-- Processing Section -->
-            <section class="processing-section" id="processingSection" style="display: none;">
-                <div class="processing-header">
-                    <h2>⚡ Processing your images...</h2>
-                    <div class="overall-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="overallProgress"></div>
-                        </div>
-                        <span class="progress-text" id="progressText">0%</span>
-                    </div>
-                </div>
-                
-                <div class="conversion-progress" id="conversionProgress">
-                    <div class="conversion-step active">
-                        <span>📤</span>
-                        <span>Uploading</span>
-                    </div>
-                    <div class="conversion-step">
-                        <span>🔄</span>
-                        <span>Processing</span>
-                    </div>
-                    <div class="conversion-step">
-                        <span>💾</span>
-                        <span>Saving</span>
-                    </div>
-                    <div class="conversion-step">
-                        <span>✅</span>
-                        <span>Complete</span>
-                    </div>
-                </div>
-
-                <div class="files-list" id="filesList">
-                    <!-- Files will be populated here -->
-                </div>
-            </section>
-
-            <!-- Results Section -->
-            <section class="results-section" id="resultsSection" style="display: none;">
-                <div class="results-header">
-                    <h2>🎉 Processing Complete!</h2>
-                    <div class="results-summary" id="resultsSummary">
-                        <!-- Summary will be populated here -->
-                    </div>
-                </div>
-
-                <div class="results-actions">
-                    <button class="btn btn-primary" id="downloadAllBtn">
-                        📦 Download All Files
+                <!-- Process Button -->
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-primary" id="processBtn" onclick="startProcessing()" style="font-size: 1.125rem; padding: 1rem 2rem;">
+                        <span id="processBtnIcon">⚡</span>
+                        <span id="processBtnText">Optimize Images</span>
                     </button>
-                    <button class="btn btn-secondary" id="optimizeMoreBtn">
-                        🔄 Process More Images
-                    </button>
-                </div>
-
-                <div class="results-list" id="resultsList">
-                    <!-- Results will be populated here -->
                 </div>
             </section>
         </main>
-
-        <!-- How it Works -->
-        <section class="how-it-works">
-            <h2>Enhanced Features</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-icon">📸</div>
-                    <h3>20+ Formats</h3>
-                    <p>Support for JPG, PNG, WebP, AVIF, HEIC, RAW (CR2, NEF, ORF), PSD, TIFF, BMP, and more.</p>
-                </div>
-                <div class="step">
-                    <div class="step-icon">🔄</div>
-                    <h3>Smart Conversion</h3>
-                    <p>Convert between any supported formats with optimized settings for web, print, or storage.</p>
-                </div>
-                <div class="step">
-                    <div class="step-icon">⚡</div>
-                    <h3>Batch Processing</h3>
-                    <p>Process multiple images simultaneously with different output formats and quality settings.</p>
-                </div>
-                <div class="step">
-                    <div class="step-icon">🎯</div>
-                    <h3>Advanced Options</h3>
-                    <p>Fine-tune compression, resize images, and create multiple variants in one go.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- System Capabilities -->
-        <section class="system-info" id="systemInfo" style="display: none;">
-            <h2>🔧 System Capabilities</h2>
-            <div class="capability-grid" id="capabilityGrid">
-                <!-- Will be populated by JavaScript -->
-            </div>
-        </section>
-
-        <!-- Enhanced Features -->
-        <section class="features">
-            <h2>Why choose our Enhanced Image Optimizer?</h2>
-            <div class="features-grid">
-                <div class="feature">
-                    <div class="feature-icon">🌟</div>
-                    <h3>Extended Format Support</h3>
-                    <p>Process HEIC photos from iPhone, RAW files from cameras, PSD from Photoshop, and 15+ more formats.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🔄</div>
-                    <h3>Format Converter</h3>
-                    <p>Convert images between any supported formats. Perfect for web optimization or print preparation.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">📱</div>
-                    <h3>Modern Formats</h3>
-                    <p>Generate WebP and AVIF versions for modern browsers, reducing bandwidth by up to 50%.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Professional Tools</h3>
-                    <p>Handle professional formats like PSD, TIFF, and camera RAW files with advanced processing.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Intelligent Processing</h3>
-                    <p>Automatic format detection, progressive JPEG creation, and smart compression algorithms.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Privacy & Security</h3>
-                    <p>All processing happens on your server. Files are automatically deleted after 24 hours.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Format Support Matrix -->
-        <section class="format-matrix" id="formatMatrix" style="display: none;">
-            <h2>📋 Supported Formats</h2>
-            <div class="format-categories">
-                <div class="format-category">
-                    <h3>📸 Photography</h3>
-                    <div class="format-list">
-                        <span class="format-badge supported">JPG/JPEG</span>
-                        <span class="format-badge supported">PNG</span>
-                        <span class="format-badge supported">HEIC/HEIF</span>
-                        <span class="format-badge supported">WebP</span>
-                        <span class="format-badge supported">AVIF</span>
-                    </div>
-                </div>
-                <div class="format-category">
-                    <h3>📷 Camera RAW</h3>
-                    <div class="format-list">
-                        <span class="format-badge supported">CR2 (Canon)</span>
-                        <span class="format-badge supported">NEF (Nikon)</span>
-                        <span class="format-badge supported">ORF (Olympus)</span>
-                        <span class="format-badge supported">ARW (Sony)</span>
-                        <span class="format-badge supported">DNG (Adobe)</span>
-                    </div>
-                </div>
-                <div class="format-category">
-                    <h3>🎨 Professional</h3>
-                    <div class="format-list">
-                        <span class="format-badge supported">PSD (Photoshop)</span>
-                        <span class="format-badge supported">TIFF/TIF</span>
-                        <span class="format-badge supported">BMP</span>
-                        <span class="format-badge supported">SVG</span>
-                        <span class="format-badge supported">EPS</span>
-                    </div>
-                </div>
-                <div class="format-category">
-                    <h3>🌐 Web & System</h3>
-                    <div class="format-list">
-                        <span class="format-badge supported">GIF</span>
-                        <span class="format-badge supported">ICO</span>
-                        <span class="format-badge supported">PDF</span>
-                    </div>
-                </div>
-            </div>
-        </section>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Enhanced Image Optimizer Pro. Supporting 20+ formats with advanced conversion capabilities.</p>
-            <div class="footer-links">
-                <a href="#" onclick="toggleFormatMatrix()">Supported Formats</a>
-                <a href="#" onclick="toggleSystemInfo()">System Info</a>
-                <a href="#privacy">Privacy Policy</a>
-                <a href="https://github.com/your-username/image-optimizer" target="_blank">GitHub</a>
-            </div>
-        </div>
-    </footer>
-
-    <script src="assets/app.js"></script>
     <script>
-        // Toggle format matrix visibility
-        function toggleFormatMatrix() {
-            const matrix = document.getElementById('formatMatrix');
-            matrix.style.display = matrix.style.display === 'none' ? 'block' : 'none';
-        }
+        // Application state
+        let currentMode = 'optimize';
+        let selectedFiles = [];
 
-        // Toggle system info visibility
-        function toggleSystemInfo() {
-            const info = document.getElementById('systemInfo');
-            if (info.style.display === 'none') {
-                info.style.display = 'block';
-                loadSystemCapabilities();
-            } else {
-                info.style.display = 'none';
-            }
-        }
-
-        // Load and display system capabilities
-        async function loadSystemCapabilities() {
-            try {
-                const response = await fetch('api/formats.php');
-                const data = await response.json();
-                
-                if (data.success) {
-                    displaySystemCapabilities(data);
-                }
-            } catch (error) {
-                console.error('Failed to load system capabilities:', error);
-            }
-        }
-
-        // Display system capabilities
-        function displaySystemCapabilities(data) {
-            const grid = document.getElementById('capabilityGrid');
-            if (!grid) return;
-
-            const capabilities = [
-                {
-                    name: 'PHP Version',
-                    value: data.system_info.php_version,
-                    status: 'supported'
-                },
-                {
-                    name: 'ImageMagick',
-                    value: data.system_info.has_imagick ? 'Available' : 'Not Available',
-                    status: data.system_info.has_imagick ? 'supported' : 'limited'
-                },
-                {
-                    name: 'GD Extension',
-                    value: data.system_info.has_gd ? 'Available' : 'Not Available',
-                    status: data.system_info.has_gd ? 'supported' : 'unsupported'
-                },
-                {
-                    name: 'Memory Limit',
-                    value: data.system_info.memory_limit,
-                    status: 'supported'
-                },
-                {
-                    name: 'Max File Size',
-                    value: data.system_info.max_file_size,
-                    status: 'supported'
-                },
-                {
-                    name: 'Total Formats',
-                    value: data.total_supported + ' formats',
-                    status: 'supported'
-                }
-            ];
-
-            grid.innerHTML = capabilities.map(cap => `
-                <div class="capability-item">
-                    <div class="capability-status ${cap.status}"></div>
-                    <h4>${cap.name}</h4>
-                    <p>${cap.value}</p>
-                </div>
-            `).join('');
-        }
-
-        // Update mode description
-        document.getElementById('modeToggle').addEventListener('change', function(e) {
-            const description = document.getElementById('modeDescription');
-            const optimizeLabel = document.getElementById('optimizeLabel');
-            const convertLabel = document.getElementById('convertLabel');
-            
-            if (e.target.checked) {
-                description.textContent = 'Convert images between different formats. Support for web optimization, print preparation, and format standardization.';
-                optimizeLabel.classList.remove('active');
-                convertLabel.classList.add('active');
-            } else {
-                description.textContent = 'Compress images while maintaining quality. Supports JPG, PNG, WebP, AVIF, HEIC, RAW, and more.';
-                convertLabel.classList.remove('active');
-                optimizeLabel.classList.add('active');
-            }
-        });
-
-        // Update quality display for convert mode
-        document.getElementById('convertQuality')?.addEventListener('input', function() {
-            const value = this.value;
-            document.getElementById('convertQualityValue').textContent = value + '%';
-        });
-
-        // Auto-load system capabilities on page load
+        // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Update formats supported counter
-            fetch('api/formats.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('formatsSupported').textContent = data.total_supported;
-                        
-                        // Update supported formats list
-                        const formatsList = data.formats.map(f => f.toUpperCase()).slice(0, 6).join(', ');
-                        document.getElementById('supportedFormatsList').textContent = formatsList + (data.total_supported > 6 ? '...' : '');
-                        
-                        // Update max file size
-                        document.getElementById('maxFileSize').textContent = data.system_info.max_file_size;
-                    }
-                })
-                .catch(error => console.error('Failed to load format info:', error));
+            setupEventListeners();
+            updateModeDisplay();
         });
+
+        function setupEventListeners() {
+            // File input events
+            const fileInput = document.getElementById('fileInput');
+            const uploadZone = document.getElementById('uploadZone');
+            
+            fileInput.addEventListener('change', handleFileSelect);
+            uploadZone.addEventListener('click', () => fileInput.click());
+            uploadZone.addEventListener('dragover', handleDragOver);
+            uploadZone.addEventListener('dragleave', handleDragLeave);
+            uploadZone.addEventListener('drop', handleDrop);
+            
+            // Prevent default drag behaviors
+            document.addEventListener('dragover', e => e.preventDefault());
+            document.addEventListener('drop', e => e.preventDefault());
+            
+            // Quality sliders
+            document.getElementById('quality').addEventListener('input', updateQualityDisplay);
+            document.getElementById('convertQuality').addEventListener('input', updateConvertQualityDisplay);
+            
+            // Max width select
+            document.getElementById('maxWidth').addEventListener('change', handleMaxWidthChange);
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            updateModeDisplay();
+        }
+
+        function toggleMode() {
+            currentMode = currentMode === 'optimize' ? 'convert' : 'optimize';
+            updateModeDisplay();
+        }
+
+        function updateModeDisplay() {
+            const optimizeMode = document.getElementById('optimizeMode');
+            const convertMode = document.getElementById('convertMode');
+            const toggleSwitch = document.getElementById('toggleSwitch');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const optimizePanel = document.getElementById('optimizePanel');
+            const convertPanel = document.getElementById('convertPanel');
+            const modeDescription = document.getElementById('modeDescription');
+            const uploadTitle = document.getElementById('uploadTitle');
+            const processBtnIcon = document.getElementById('processBtnIcon');
+            const processBtnText = document.getElementById('processBtnText');
+
+            if (currentMode === 'optimize') {
+                // Update mode buttons
+                optimizeMode.classList.add('active');
+                convertMode.classList.remove('active');
+                
+                // Update toggle switch
+                toggleSwitch.classList.remove('convert-mode');
+                toggleIcon.textContent = '⚡';
+                
+                // Update panels - show optimize, hide convert
+                optimizePanel.style.display = 'block';
+                optimizePanel.classList.remove('hidden');
+                convertPanel.style.display = 'none';
+                convertPanel.classList.remove('active');
+                
+                // Update descriptions
+                modeDescription.textContent = 'Compress images while maintaining quality. Supports JPG, PNG, WebP, AVIF, HEIC, RAW, and more.';
+                uploadTitle.textContent = 'Drop your images here';
+                
+                // Update button
+                processBtnIcon.textContent = '⚡';
+                processBtnText.textContent = 'Optimize Images';
+                
+            } else {
+                // Update mode buttons
+                optimizeMode.classList.remove('active');
+                convertMode.classList.add('active');
+                
+                // Update toggle switch
+                toggleSwitch.classList.add('convert-mode');
+                toggleIcon.textContent = '🔄';
+                
+                // Update panels - hide optimize, show convert
+                optimizePanel.style.display = 'none';
+                optimizePanel.classList.add('hidden');
+                convertPanel.style.display = 'block';
+                convertPanel.classList.add('active');
+                
+                // Update descriptions
+                modeDescription.textContent = 'Convert images between different formats. Support for web optimization, print preparation, and format standardization.';
+                uploadTitle.textContent = 'Drop images to convert';
+                
+                // Update button
+                processBtnIcon.textContent = '🔄';
+                processBtnText.textContent = 'Convert Images';
+            }
+        }
+
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            processSelectedFiles(files);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+                e.currentTarget.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.remove('drag-over');
+            
+            const files = Array.from(e.dataTransfer.files);
+            processSelectedFiles(files);
+        }
+
+        function processSelectedFiles(files) {
+            // Filter image files
+            const imageFiles = files.filter(file => {
+                const validTypes = [
+                    'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 
+                    'image/webp', 'image/bmp', 'image/tiff', 'image/svg+xml',
+                    'image/heic', 'image/heif', 'image/avif'
+                ];
+                
+                // Also check by extension for files that might not have proper MIME types
+                const extension = file.name.split('.').pop().toLowerCase();
+                const validExtensions = [
+                    'jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'tif',
+                    'svg', 'heic', 'heif', 'avif', 'psd', 'raw', 'cr2', 'nef',
+                    'orf', 'arw', 'dng', 'ico'
+                ];
+                
+                return validTypes.includes(file.type) || validExtensions.includes(extension);
+            });
+
+            if (imageFiles.length === 0) {
+                showNotification('Please select valid image files', 'error');
+                return;
+            }
+
+            if (imageFiles.length !== files.length) {
+                showNotification(`${files.length - imageFiles.length} non-image files were ignored`, 'warning');
+            }
+
+            selectedFiles = imageFiles;
+            displayFilePreview();
+        }
+
+        function displayFilePreview() {
+            if (selectedFiles.length === 0) return;
+
+            // Create or update file preview
+            let previewSection = document.getElementById('filePreview');
+            if (!previewSection) {
+                previewSection = document.createElement('div');
+                previewSection.id = 'filePreview';
+                previewSection.className = 'file-preview-section';
+                document.getElementById('uploadSection').appendChild(previewSection);
+            }
+
+            const fileList = selectedFiles.map((file, index) => {
+                const extension = file.name.split('.').pop().toLowerCase();
+                const sizeFormatted = formatBytes(file.size);
+                
+                return `
+                    <div class="file-preview-item fade-in-up" style="animation-delay: ${index * 0.1}s">
+                        <div class="file-icon">${getFileIcon(extension)}</div>
+                        <div class="file-info">
+                            <div class="file-name" title="${file.name}">${file.name}</div>
+                            <div class="file-details">
+                                <span class="file-size">${sizeFormatted}</span>
+                                <span class="format-badge">${extension.toUpperCase()}</span>
+                            </div>
+                        </div>
+                        <button class="remove-file-btn" onclick="removeFile(${index})" title="Remove file">×</button>
+                    </div>
+                `;
+            }).join('');
+
+            previewSection.innerHTML = `
+                <div style="background: var(--gray-50); border-radius: var(--border-radius-lg); padding: var(--space-lg); margin-top: var(--space-lg); border: 1px solid var(--gray-200);">
+                    <h3 style="color: var(--gray-800); margin-bottom: var(--space-md); font-weight: 600;">
+                        📋 Files Ready (${selectedFiles.length})
+                    </h3>
+                    <div class="file-preview-list" style="display: grid; gap: var(--space-sm); margin-bottom: var(--space-lg);">
+                        ${fileList}
+                    </div>
+                    <div class="preview-actions" style="display: flex; gap: var(--space-md); justify-content: center;">
+                        <button class="btn btn-secondary" onclick="clearFiles()">
+                            🗑️ Clear All
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Add file preview styles
+            addFilePreviewStyles();
+        }
+
+        function addFilePreviewStyles() {
+            if (document.getElementById('filePreviewStyles')) return;
+
+            const styles = `
+                <style id="filePreviewStyles">
+                    .file-preview-item {
+                        display: flex;
+                        align-items: center;
+                        gap: var(--space-md);
+                        background: white;
+                        padding: var(--space-md);
+                        border-radius: var(--border-radius);
+                        border: 1px solid var(--gray-200);
+                        transition: all var(--transition-fast);
+                    }
+
+                    .file-preview-item:hover {
+                        box-shadow: var(--shadow-md);
+                        transform: translateY(-1px);
+                    }
+
+                    .file-icon {
+                        width: 40px;
+                        height: 40px;
+                        background: var(--gray-100);
+                        border-radius: var(--border-radius);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: var(--font-size-lg);
+                        flex-shrink: 0;
+                    }
+
+                    .file-info {
+                        flex-grow: 1;
+                        min-width: 0;
+                    }
+
+                    .file-name {
+                        font-weight: 600;
+                        color: var(--gray-800);
+                        margin-bottom: var(--space-xs);
+                        word-break: break-all;
+                        font-size: var(--font-size-sm);
+                    }
+
+                    .file-details {
+                        display: flex;
+                        gap: var(--space-md);
+                        font-size: var(--font-size-sm);
+                        color: var(--gray-600);
+                        align-items: center;
+                    }
+
+                    .file-size {
+                        color: var(--gray-500);
+                    }
+
+                    .remove-file-btn {
+                        background: var(--error-color);
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        width: 24px;
+                        height: 24px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        font-size: var(--font-size-sm);
+                        transition: all var(--transition-fast);
+                        flex-shrink: 0;
+                    }
+
+                    .remove-file-btn:hover {
+                        background: #dc2626;
+                        transform: scale(1.1);
+                    }
+                </style>
+            `;
+            document.head.insertAdjacentHTML('beforeend', styles);
+        }
+
+        function getFileIcon(extension) {
+            const icons = {
+                'jpg': '📸', 'jpeg': '📸', 'png': '🖼️', 'gif': '🎞️',
+                'webp': '🌐', 'avif': '⚡', 'bmp': '💾', 'tiff': '🖨️',
+                'tif': '🖨️', 'svg': '🎨', 'heic': '📱', 'heif': '📱',
+                'psd': '🎭', 'raw': '📷', 'cr2': '📷', 'nef': '📷',
+                'orf': '📷', 'arw': '📷', 'dng': '📷', 'ico': '🔳'
+            };
+            return icons[extension] || '📄';
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            if (selectedFiles.length > 0) {
+                displayFilePreview();
+            } else {
+                clearFiles();
+            }
+        }
+
+        function clearFiles() {
+            selectedFiles = [];
+            const previewSection = document.getElementById('filePreview');
+            if (previewSection) {
+                previewSection.remove();
+            }
+            document.getElementById('fileInput').value = '';
+        }
+
+        function updateQualityDisplay() {
+            const quality = document.getElementById('quality');
+            const qualityValue = document.getElementById('qualityValue');
+            qualityValue.textContent = quality.value + '%';
+        }
+
+        function updateConvertQualityDisplay() {
+            const quality = document.getElementById('convertQuality');
+            const qualityValue = document.getElementById('convertQualityValue');
+            qualityValue.textContent = quality.value + '%';
+        }
+
+        function handleMaxWidthChange() {
+            const maxWidth = document.getElementById('maxWidth');
+            const customWidth = document.getElementById('customWidth');
+            
+            if (maxWidth.value === 'custom') {
+                customWidth.style.display = 'block';
+                customWidth.focus();
+            } else {
+                customWidth.style.display = 'none';
+                customWidth.value = '';
+            }
+        }
+
+        function startProcessing() {
+            if (selectedFiles.length === 0) {
+                showNotification('Please select files first', 'warning');
+                return;
+            }
+
+            // Validate options based on mode
+            if (currentMode === 'convert') {
+                const outputFormat = document.getElementById('outputFormat').value;
+                if (!outputFormat) {
+                    showNotification('Please select an output format', 'warning');
+                    return;
+                }
+            }
+
+            // Create form data
+            const formData = new FormData();
+            
+            // Add files
+            selectedFiles.forEach(file => {
+                formData.append('images[]', file);
+            });
+            
+            // Add mode
+            formData.append('mode', currentMode);
+            
+            // Add options based on mode
+            if (currentMode === 'optimize') {
+                formData.append('quality', document.getElementById('quality').value);
+                const maxWidth = document.getElementById('maxWidth').value;
+                if (maxWidth === 'custom') {
+                    const customWidth = document.getElementById('customWidth').value;
+                    if (customWidth) {
+                        formData.append('max_width', customWidth);
+                    }
+                } else if (maxWidth) {
+                    formData.append('max_width', maxWidth);
+                }
+                formData.append('create_webp', document.getElementById('createWebp').checked);
+                formData.append('create_avif', document.getElementById('createAvif').checked);
+                formData.append('create_thumbnail', document.getElementById('createThumbnail').checked);
+            } else {
+                formData.append('output_format', document.getElementById('outputFormat').value);
+                formData.append('quality', document.getElementById('convertQuality').value);
+                formData.append('create_thumbnail', document.getElementById('convertThumbnail').checked);
+                
+                if (document.getElementById('convertMultiple').checked) {
+                    // Add multiple format logic here if needed
+                    formData.append('convert_multiple', 'true');
+                }
+            }
+
+            // Show processing state
+            showProcessing();
+
+            // Send request
+            fetch('api/process.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideProcessing();
+                if (data.success) {
+                    showResults(data);
+                } else {
+                    throw new Error(data.error || 'Processing failed');
+                }
+            })
+            .catch(error => {
+                hideProcessing();
+                showNotification('Processing failed: ' + error.message, 'error');
+            });
+        }
+
+        function showProcessing() {
+            const processBtn = document.getElementById('processBtn');
+            processBtn.disabled = true;
+            processBtn.innerHTML = `
+                <div class="spinner" style="
+                    width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3);
+                    border-top: 2px solid white; border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                "></div>
+                Processing...
+            `;
+
+            // Add spinner animation
+            if (!document.getElementById('spinnerStyles')) {
+                const spinnerStyles = `
+                    <style id="spinnerStyles">
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    </style>
+                `;
+                document.head.insertAdjacentHTML('beforeend', spinnerStyles);
+            }
+        }
+
+        function hideProcessing() {
+            const processBtn = document.getElementById('processBtn');
+            const processBtnIcon = document.getElementById('processBtnIcon');
+            const processBtnText = document.getElementById('processBtnText');
+            
+            processBtn.disabled = false;
+            processBtn.innerHTML = `
+                <span>${processBtnIcon.textContent}</span>
+                <span>${processBtnText.textContent}</span>
+            `;
+        }
+
+        function showResults(data) {
+            // Create results section
+            let resultsSection = document.getElementById('resultsSection');
+            if (!resultsSection) {
+                resultsSection = document.createElement('div');
+                resultsSection.id = 'resultsSection';
+                resultsSection.className = 'results-section';
+                document.querySelector('.main-content').appendChild(resultsSection);
+            }
+
+            const isSuccess = data.success && data.data;
+            const fileCount = data.type === 'batch' ? data.data.summary.successful : 1;
+            const downloadLinks = data.data.download_links || [];
+
+            resultsSection.innerHTML = `
+                <div style="padding: var(--space-2xl); text-align: center;">
+                    <h2 style="font-size: var(--font-size-3xl); color: var(--gray-800); margin-bottom: var(--space-lg); display: flex; align-items: center; justify-content: center; gap: var(--space-sm);">
+                        🎉 ${currentMode === 'convert' ? 'Conversion' : 'Optimization'} Complete!
+                    </h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-xl); max-width: 600px; margin-left: auto; margin-right: auto;">
+                        <div style="text-align: center; padding: var(--space-lg); background: var(--gray-50); border-radius: var(--border-radius-lg); border: 1px solid var(--gray-200);">
+                            <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--primary-color); margin-bottom: var(--space-xs);">
+                                ${fileCount}
+                            </div>
+                            <div style="font-size: var(--font-size-sm); color: var(--gray-600);">
+                                Files ${currentMode === 'convert' ? 'Converted' : 'Optimized'}
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding: var(--space-lg); background: var(--gray-50); border-radius: var(--border-radius-lg); border: 1px solid var(--gray-200);">
+                            <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--success-color); margin-bottom: var(--space-xs);">
+                                ${downloadLinks.length}
+                            </div>
+                            <div style="font-size: var(--font-size-sm); color: var(--gray-600);">
+                                Files Created
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: var(--space-md); justify-content: center; margin-bottom: var(--space-xl); flex-wrap: wrap;">
+                        ${downloadLinks.length > 1 ? `
+                            <button class="btn btn-primary" onclick="downloadAll()">
+                                📦 Download All Files
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-secondary" onclick="processMore()">
+                            🔄 Process More Images
+                        </button>
+                    </div>
+
+                    <div style="display: grid; gap: var(--space-md); max-width: 800px; margin: 0 auto;">
+                        ${downloadLinks.map(link => `
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: white; padding: var(--space-md); border-radius: var(--border-radius); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);">
+                                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                                    <div style="font-size: var(--font-size-lg);">
+                                        ${getFileIcon(link.format)}
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--gray-800); margin-bottom: var(--space-xs);">
+                                            ${link.format.toUpperCase()} Format
+                                        </div>
+                                        <div style="font-size: var(--font-size-sm); color: var(--gray-600);">
+                                            ${link.size}${link.savings !== 'thumbnail' ? ` • ${link.savings}% smaller` : ' • Thumbnail'}
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="${link.url}" class="btn btn-primary" download style="text-decoration: none;">
+                                    📥 Download
+                                </a>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function downloadAll() {
+            // This would trigger a batch download - implementation depends on your backend
+            showNotification('Batch download feature coming soon!', 'info');
+        }
+
+        function processMore() {
+            // Reset the application
+            clearFiles();
+            const resultsSection = document.getElementById('resultsSection');
+            if (resultsSection) {
+                resultsSection.remove();
+            }
+            document.getElementById('uploadSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; z-index: 1000;
+                background: white; border-radius: 8px; padding: 16px 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                border-left: 4px solid ${getNotificationColor(type)};
+                max-width: 400px; animation: slideInRight 0.3s ease-out;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 18px;">${getNotificationIcon(type)}</span>
+                    <span style="flex: 1; font-size: 14px; color: #374151;">${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="background: none; border: none; font-size: 18px; cursor: pointer; color: #9ca3af; padding: 0; width: 24px; height: 24px;">×</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+
+            // Add animation styles if not already present
+            if (!document.getElementById('notificationStyles')) {
+                const styles = `
+                    <style id="notificationStyles">
+                        @keyframes slideInRight {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                    </style>
+                `;
+                document.head.insertAdjacentHTML('beforeend', styles);
+            }
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                'info': 'ℹ️',
+                'success': '✅',
+                'warning': '⚠️',
+                'error': '❌'
+            };
+            return icons[type] || 'ℹ️';
+        }
+
+        function getNotificationColor(type) {
+            const colors = {
+                'info': '#60a5fa',
+                'success': '#4ade80',
+                'warning': '#fbbf24',
+                'error': '#f87171'
+            };
+            return colors[type] || '#60a5fa';
+        }
+
+        function formatBytes(bytes, decimals = 1) {
+            if (bytes === 0) return '0 B';
+            
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i];
+        }
+
+        // Initialize quality displays
+        updateQualityDisplay();
+        updateConvertQualityDisplay();
     </script>
-
-    <style>
-        /* Additional styles for format matrix */
-        .format-matrix {
-            background: white;
-            border-radius: var(--border-radius-xl);
-            box-shadow: var(--shadow-lg);
-            padding: var(--space-2xl);
-            margin-bottom: var(--space-2xl);
-        }
-
-        .format-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--space-xl);
-            margin-top: var(--space-lg);
-        }
-
-        .format-category h3 {
-            color: var(--gray-800);
-            margin-bottom: var(--space-md);
-            padding-bottom: var(--space-sm);
-            border-bottom: 2px solid var(--primary-color);
-        }
-
-        .format-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-sm);
-        }
-
-        .format-badge {
-            background: var(--success-color);
-            color: white;
-            padding: var(--space-xs) var(--space-sm);
-            border-radius: var(--border-radius);
-            font-size: var(--font-size-sm);
-            font-weight: 600;
-        }
-
-        .format-badge.limited {
-            background: var(--warning-color);
-        }
-
-        .format-badge.experimental {
-            background: var(--secondary-color);
-        }
-    </style>
 </body>
 </html>
