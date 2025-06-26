@@ -325,7 +325,7 @@ class ImageOptimizer
     }
 
     /**
-     * Enhanced optimization with format conversion support
+     * Enhanced optimization with convert mode support
      */
     public function optimizeImage($file, $options = [])
     {
@@ -362,60 +362,20 @@ class ImageOptimizer
             $originalWidth = $image->width();
             $originalHeight = $image->height();
 
-            // Apply optimizations
-            $quality = $options['quality'] ?? $this->defaultQuality;
-            $maxWidth = $options['max_width'] ?? null;
-            $maxHeight = $options['max_height'] ?? null;
-            $outputFormat = $options['output_format'] ?? $extension;
-            $convertTo = $options['convert_to'] ?? []; // Array of formats to convert to
-
-            // Resize if needed
-            if ($maxWidth || $maxHeight) {
-                $image->resize($maxWidth, $maxHeight, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-            }
-
-            // Create optimized versions
+            // Apply optimizations based on mode
+            $mode = $options['mode'] ?? 'optimize';
             $results = [];
-            
-            // Original format optimization
-            if ($outputFormat === $extension || empty($convertTo)) {
-                $result = $this->saveOptimizedImage($image, $filename, $outputFormat, $quality, $originalSize);
-                if ($result) {
-                    $results[] = $result;
-                }
-            }
-            
-            // Format conversions
-            foreach ($convertTo as $targetFormat) {
-                if (in_array($targetFormat, $this->supportedFormats)) {
-                    $result = $this->saveOptimizedImage($image, $filename, $targetFormat, $quality, $originalSize, true);
-                    if ($result) {
-                        $results[] = $result;
-                    }
-                }
-            }
-            
-            // Create WebP version if requested and not already created
-            if (($options['create_webp'] ?? true) && $extension !== 'webp' && !in_array('webp', $convertTo)) {
-                $result = $this->saveOptimizedImage($image, $filename, 'webp', max(60, $quality - 5), $originalSize);
-                if ($result) {
-                    $results[] = $result;
-                }
+
+            if ($mode === 'convert') {
+                // Convert mode - handle format conversion
+                $results = $this->handleConvertMode($image, $filename, $options, $originalSize);
+            } else {
+                // Optimize mode - existing logic
+                $results = $this->handleOptimizeMode($image, $filename, $extension, $options, $originalSize);
             }
 
-            // Create AVIF version if requested and supported
-            if (($options['create_avif'] ?? false) && $extension !== 'avif' && in_array('avif', $this->supportedFormats)) {
-                $result = $this->saveOptimizedImage($image, $filename, 'avif', max(50, $quality - 10), $originalSize);
-                if ($result) {
-                    $results[] = $result;
-                }
-            }
-
-            // Create thumbnail
-            if ($options['create_thumbnail'] ?? true) {
+            // Create thumbnail if requested
+            if ($options['create_thumbnail'] ?? false) {
                 $result = $this->createThumbnail($originalPath, $filename, $originalSize);
                 if ($result) {
                     $results[] = $result;
@@ -447,9 +407,86 @@ class ImageOptimizer
         } catch (Exception $e) {
             return [
                 'success' => false,
-                'errors' => ['Optimization failed: ' . $e->getMessage()]
+                'errors' => ['Processing failed: ' . $e->getMessage()]
             ];
         }
+    }
+
+    /**
+     * Handle convert mode processing
+     */
+    private function handleConvertMode($image, $filename, $options, $originalSize)
+    {
+        $results = [];
+        $quality = $options['quality'] ?? 80;
+        
+        // Handle multiple format conversion
+        if (!empty($options['convert_to'])) {
+            foreach ($options['convert_to'] as $targetFormat) {
+                if (in_array($targetFormat, $this->supportedFormats)) {
+                    $result = $this->saveOptimizedImage($image, $filename, $targetFormat, $quality, $originalSize, true);
+                    if ($result) {
+                        $results[] = $result;
+                    }
+                }
+            }
+        }
+        
+        // Handle single format conversion
+        if (!empty($options['output_format'])) {
+            $targetFormat = $options['output_format'];
+            if (in_array($targetFormat, $this->supportedFormats)) {
+                $result = $this->saveOptimizedImage($image, $filename, $targetFormat, $quality, $originalSize, true);
+                if ($result) {
+                    $results[] = $result;
+                }
+            }
+        }
+        
+        return $results;
+    }
+
+    /**
+     * Handle optimize mode processing
+     */
+    private function handleOptimizeMode($image, $filename, $extension, $options, $originalSize)
+    {
+        $results = [];
+        $quality = $options['quality'] ?? $this->defaultQuality;
+        $maxWidth = $options['max_width'] ?? null;
+        $maxHeight = $options['max_height'] ?? null;
+
+        // Resize if needed
+        if ($maxWidth || $maxHeight) {
+            $image->resize($maxWidth, $maxHeight, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+        }
+
+        // Create optimized version of original format
+        $result = $this->saveOptimizedImage($image, $filename, $extension, $quality, $originalSize);
+        if ($result) {
+            $results[] = $result;
+        }
+
+        // Create WebP version if requested
+        if (($options['create_webp'] ?? true) && $extension !== 'webp') {
+            $result = $this->saveOptimizedImage($image, $filename, 'webp', max(60, $quality - 5), $originalSize);
+            if ($result) {
+                $results[] = $result;
+            }
+        }
+
+        // Create AVIF version if requested and supported
+        if (($options['create_avif'] ?? false) && $extension !== 'avif' && in_array('avif', $this->supportedFormats)) {
+            $result = $this->saveOptimizedImage($image, $filename, 'avif', max(50, $quality - 10), $originalSize);
+            if ($result) {
+                $results[] = $result;
+            }
+        }
+
+        return $results;
     }
     
     /**

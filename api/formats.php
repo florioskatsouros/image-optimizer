@@ -37,7 +37,7 @@ try {
             'can_convert_to' => array_filter($formatDetails, function($detail) {
                 return $detail['can_convert_to'];
             }),
-            'categories' => $this->groupFormatsByCategory($formatDetails)
+            'categories' => groupFormatsByCategory($formatDetails)
         ]
     ];
     
@@ -52,7 +52,7 @@ try {
 }
 
 /**
- * Group formats by category
+ * Group formats by category - Fixed function declaration
  */
 function groupFormatsByCategory($formatDetails) {
     $categories = [];

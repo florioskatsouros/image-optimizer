@@ -100,7 +100,7 @@
 
         .header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             padding: var(--space-xl) 0;
             margin-bottom: var(--space-2xl);
@@ -129,11 +129,12 @@
             font-size: var(--font-size-lg);
             color: rgba(255, 255, 255, 0.9);
             font-weight: 300;
+            text-align: center;
         }
 
+        /* Hide stats completely */
         .stats {
-            display: flex;
-            gap: var(--space-xl);
+            display: none;
         }
 
         .stat {
@@ -796,10 +797,6 @@
                 text-align: center;
             }
             
-            .stats {
-                justify-content: center;
-            }
-            
             .logo h1 {
                 font-size: var(--font-size-2xl);
             }
@@ -890,20 +887,6 @@
                     Image Optimizer Pro
                 </h1>
                 <p class="tagline">Optimize & Convert images - 20+ formats supported</p>
-            </div>
-            <div class="stats">
-                <div class="stat">
-                    <span class="stat-number" id="totalProcessed">0</span>
-                    <span class="stat-label">Images Processed</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number" id="totalSaved">0GB</span>
-                    <span class="stat-label">Storage Saved</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number" id="formatsSupported">20+</span>
-                    <span class="stat-label">Formats Supported</span>
-                </div>
             </div>
         </header>
 
@@ -1119,6 +1102,8 @@
             document.getElementById('maxWidth').addEventListener('change', handleMaxWidthChange);
         }
 
+        // Enhanced Mode Switching Functions with Complete Clear
+
         function setMode(mode) {
             currentMode = mode;
             updateModeDisplay();
@@ -1136,6 +1121,15 @@
             if (resultsSection) {
                 resultsSection.remove();
             }
+            
+            // Also clear the files and reset upload zone
+            clearFiles();
+            
+            // Hide upload progress if showing
+            hideUploadProgress();
+            
+            // Reset processing button to normal state
+            hideProcessing();
         }
 
         function updateModeDisplay() {
@@ -1342,6 +1336,18 @@
             if (fileInput) {
                 fileInput.value = '';
             }
+            
+            // Clear the files grid
+            const filesGrid = document.getElementById('filesGrid');
+            if (filesGrid) {
+                filesGrid.innerHTML = '';
+            }
+            
+            // Reset files count
+            const filesCount = document.getElementById('filesCount');
+            if (filesCount) {
+                filesCount.textContent = '0 files selected';
+            }
         }
 
         function removeFile(index) {
@@ -1529,6 +1535,15 @@
                 const progressOverlay = document.getElementById(`progress-${index}`);
                 if (progressOverlay) {
                     progressOverlay.style.display = 'none';
+                    
+                    // Reset progress circle
+                    const circle = progressOverlay.querySelector('.progress-ring-circle');
+                    const percentageText = progressOverlay.querySelector('.progress-percentage');
+                    
+                    if (circle && percentageText) {
+                        circle.style.strokeDashoffset = 163.36; // Reset to 0%
+                        percentageText.textContent = '0%';
+                    }
                 }
             });
         }
@@ -1536,13 +1551,16 @@
         function showProcessing() {
             const processBtn = document.getElementById('processBtn');
             processBtn.disabled = true;
+            
+            const modeText = currentMode === 'convert' ? 'Converting' : 'Processing';
+            
             processBtn.innerHTML = `
                 <div class="spinner" style="
                     width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3);
                     border-top: 2px solid white; border-radius: 50%;
                     animation: spin 1s linear infinite;
                 "></div>
-                Processing...
+                ${modeText}...
             `;
         }
 
@@ -1554,12 +1572,13 @@
             if (processBtn) {
                 processBtn.disabled = false;
                 
-                const iconText = processBtnIcon ? processBtnIcon.textContent : (currentMode === 'convert' ? '🔄' : '⚡');
-                const buttonText = processBtnText ? processBtnText.textContent : (currentMode === 'convert' ? 'Convert Images' : 'Optimize Images');
+                // Get the correct icon and text based on current mode
+                const iconText = currentMode === 'convert' ? '🔄' : '⚡';
+                const buttonText = currentMode === 'convert' ? 'Convert Images' : 'Optimize Images';
                 
                 processBtn.innerHTML = `
-                    <span>${iconText}</span>
-                    <span>${buttonText}</span>
+                    <span id="processBtnIcon">${iconText}</span>
+                    <span id="processBtnText">${buttonText}</span>
                 `;
             }
         }
@@ -1649,12 +1668,20 @@
         }
 
         function processMore() {
-            // Reset the application
+            // Reset the application completely
             clearFiles();
             const resultsSection = document.getElementById('resultsSection');
             if (resultsSection) {
                 resultsSection.remove();
             }
+            
+            // Hide any progress overlays
+            hideUploadProgress();
+            
+            // Reset processing button
+            hideProcessing();
+            
+            // Scroll to upload section
             document.getElementById('uploadSection').scrollIntoView({ behavior: 'smooth' });
         }
 

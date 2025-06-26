@@ -47,7 +47,7 @@ function handleSingleDownload() {
     
     $filename = $_GET['file'];
     
-    // Sanitize filename
+    // Enhanced sanitization
     $filename = basename($filename);
     $filename = preg_replace('/[^a-zA-Z0-9._-]/', '', $filename);
     
@@ -55,10 +55,18 @@ function handleSingleDownload() {
         throw new Exception('Invalid filename');
     }
     
+    // Additional security: check for valid image extensions
+    $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'bmp', 'tiff', 'tif', 'ico'];
+    
+    if (!in_array($extension, $allowedExtensions)) {
+        throw new Exception('File type not allowed');
+    }
+    
     $filepath = $optimizedDir . $filename;
     
-    // Check if file exists
-    if (!file_exists($filepath)) {
+    // Check if file exists and is readable
+    if (!file_exists($filepath) || !is_readable($filepath)) {
         throw new Exception('File not found');
     }
     
@@ -68,6 +76,12 @@ function handleSingleDownload() {
     
     if (strpos($realPath, $realOptimizedDir) !== 0) {
         throw new Exception('Access denied');
+    }
+    
+    // Additional check: file age (cleanup old files)
+    $fileAge = time() - filemtime($filepath);
+    if ($fileAge > 86400) { // 24 hours
+        throw new Exception('File has expired');
     }
     
     // Get file info
@@ -90,40 +104,30 @@ function handleSingleDownload() {
         exit;
     }
     
-    // Enhanced headers for optimized images
+    // Security headers
     header('Content-Type: ' . $mimeType);
     header('Content-Disposition: attachment; filename="' . $filename . '"');
     header('Content-Length: ' . $fileSize);
+    header('X-Content-Type-Options: nosniff');
     
-    // Advanced caching headers
-    header('Cache-Control: public, max-age=31536000, immutable'); // 1 year
+    // Caching headers
+    header('Cache-Control: public, max-age=3600'); // 1 hour for optimized images
     header('ETag: ' . $etag);
     header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $lastModified) . ' GMT');
-    header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
-    header('Pragma: public');
     
     // Performance headers
     header('X-Image-Optimized: true');
-    header('X-Cache-Status: MISS');
     
-    // Add Progressive JPEG indicator
-    if (isProgressiveJpeg($filepath)) {
-        header('X-Image-Progressive: true');
-    }
-    
-    // Support for range requests (resume downloads)
+    // Support for range requests
     if (isset($_SERVER['HTTP_RANGE'])) {
         handleRangeRequest($filepath, $fileSize, $mimeType);
     } else {
-        // Output entire file
-        if ($fileSize > 0) {
-            // For large files, use readfile with output buffering
-            if ($fileSize > 1024 * 1024) { // > 1MB
-                ob_end_clean();
-                readfile($filepath);
-            } else {
-                readfile($filepath);
-            }
+        // Output file efficiently
+        if ($fileSize > 1024 * 1024) { // > 1MB
+            ob_end_clean();
+            readfile($filepath);
+        } else {
+            readfile($filepath);
         }
     }
     

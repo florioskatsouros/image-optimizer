@@ -1,5 +1,5 @@
 /**
- * 🎨 Enhanced Image Optimizer Pro - JavaScript Application
+ *  Enhanced Image Optimizer Pro - JavaScript Application
  * With Format Converter and Extended Format Support
  */
 
@@ -7,13 +7,13 @@ class ImageOptimizerApp {
     constructor() {
         this.files = [];
         this.isProcessing = false;
-        this.currentStep = 'upload'; // upload, processing, results
-        this.currentMode = 'optimize'; // optimize, convert
+        this.currentStep = 'upload';
+        this.currentMode = 'optimize'; 
         this.supportedFormats = [];
         this.formatDetails = {};
         this.processedResults = [];
         
-        // DOM Elements
+        // DOM Elements - Updated for our HTML structure
         this.uploadZone = document.getElementById('uploadZone');
         this.fileInput = document.getElementById('fileInput');
         this.uploadSection = document.getElementById('uploadSection');
@@ -24,8 +24,7 @@ class ImageOptimizerApp {
         this.progressBar = document.getElementById('overallProgress');
         this.progressText = document.getElementById('progressText');
         
-        // Mode switching
-        this.modeToggle = document.getElementById('modeToggle');
+        // Mode switching elements - Updated for toggle buttons
         this.optimizePanel = document.getElementById('optimizePanel');
         this.convertPanel = document.getElementById('convertPanel');
         
@@ -40,9 +39,10 @@ class ImageOptimizerApp {
         
         // Options - Convert Mode
         this.outputFormatSelect = document.getElementById('outputFormat');
-        this.convertToMultiple = document.getElementById('convertToMultiple');
-        this.selectedFormats = document.getElementById('selectedFormats');
-        this.formatPreview = document.getElementById('formatPreview');
+        this.convertQualitySlider = document.getElementById('convertQuality');
+        this.convertQualityValue = document.getElementById('convertQualityValue');
+        this.convertToMultiple = document.getElementById('convertMultiple');
+        this.convertThumbnail = document.getElementById('convertThumbnail');
         
         // Buttons
         this.downloadAllBtn = document.getElementById('downloadAllBtn');
@@ -240,8 +240,13 @@ class ImageOptimizerApp {
         // File input events
         this.fileInput?.addEventListener('change', (e) => this.handleFileSelect(e));
         
-        // Drag and drop events
-        this.uploadZone?.addEventListener('click', () => this.fileInput?.click());
+        // Drag and drop events - Updated to work with our upload zone structure
+        this.uploadZone?.addEventListener('click', (e) => {
+            // Only trigger file input if clicking on upload zone, not on buttons/thumbnails
+            if (e.target === this.uploadZone || (this.uploadZone.contains(e.target) && !e.target.closest('button') && !e.target.closest('.file-item'))) {
+                this.fileInput?.click();
+            }
+        });
         this.uploadZone?.addEventListener('dragover', (e) => this.handleDragOver(e));
         this.uploadZone?.addEventListener('dragleave', (e) => this.handleDragLeave(e));
         this.uploadZone?.addEventListener('drop', (e) => this.handleDrop(e));
@@ -250,11 +255,22 @@ class ImageOptimizerApp {
         document.addEventListener('dragover', (e) => e.preventDefault());
         document.addEventListener('drop', (e) => e.preventDefault());
         
-        // Mode toggle
-        this.modeToggle?.addEventListener('change', (e) => this.handleModeChange(e));
+        // Mode toggle - Connect to existing global functions
+        // Note: Mode switching is handled by global setMode() and toggleMode() functions
+        // We'll create a bridge to connect them to our class
+        window.appSetMode = (mode) => {
+            this.currentMode = mode;
+            this.handleModeChange();
+        };
         
-        // Quality slider
+        window.appToggleMode = () => {
+            this.currentMode = this.currentMode === 'optimize' ? 'convert' : 'optimize';
+            this.handleModeChange();
+        };
+        
+        // Quality sliders - Support both optimize and convert mode sliders
         this.qualitySlider?.addEventListener('input', () => this.updateQualityDisplay());
+        this.convertQualitySlider?.addEventListener('input', () => this.updateConvertQualityDisplay());
         
         // Max width select
         this.maxWidthSelect?.addEventListener('change', () => this.handleMaxWidthChange());
@@ -269,34 +285,109 @@ class ImageOptimizerApp {
         this.downloadAllBtn?.addEventListener('click', () => this.downloadAll());
         this.optimizeMoreBtn?.addEventListener('click', () => this.resetToUpload());
         
+        // Process button - connect to global function
+        window.appStartProcessing = () => this.startProcessing();
+        
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+    }
+
+    /**
+     * Update convert quality display
+     */
+    updateConvertQualityDisplay() {
+        if (!this.convertQualitySlider || !this.convertQualityValue) return;
+        
+        const value = this.convertQualitySlider.value;
+        this.convertQualityValue.textContent = `${value}%`;
     }
 
     /**
      * Handle mode change between optimize and convert
      */
     handleModeChange(e) {
-        this.currentMode = e.target.checked ? 'convert' : 'optimize';
+        // Update based on the toggle buttons, not checkbox
+        // This gets called by setMode() and toggleMode() functions
         
-        // Update UI
+        // Update UI panels
         if (this.optimizePanel && this.convertPanel) {
             if (this.currentMode === 'convert') {
                 this.optimizePanel.style.display = 'none';
+                this.optimizePanel.classList.add('hidden');
                 this.convertPanel.style.display = 'block';
+                this.convertPanel.classList.add('active');
                 this.updateUploadZoneText('converter');
             } else {
                 this.optimizePanel.style.display = 'block';
+                this.optimizePanel.classList.remove('hidden');
                 this.convertPanel.style.display = 'none';
+                this.convertPanel.classList.remove('active');
                 this.updateUploadZoneText('optimizer');
             }
         }
 
         // Update process button text
-        if (this.processBtn) {
-            this.processBtn.innerHTML = this.currentMode === 'convert' 
-                ? '🔄 Convert Images' 
-                : '⚡ Optimize Images';
+        this.updateProcessButton();
+        
+        // Clear any existing results and files when mode changes
+        this.clearResults();
+    }
+
+    /**
+    * Update process button based on current mode
+    */
+    updateProcessButton() {
+        const processBtn = document.getElementById('processBtn');
+        const processBtnIcon = document.getElementById('processBtnIcon');
+        const processBtnText = document.getElementById('processBtnText');
+        
+        if (processBtn) {
+            if (this.currentMode === 'convert') {
+                if (processBtnIcon) processBtnIcon.textContent = '🔄';
+                if (processBtnText) processBtnText.textContent = 'Convert Images';
+            } else {
+                if (processBtnIcon) processBtnIcon.textContent = '⚡';
+                if (processBtnText) processBtnText.textContent = 'Optimize Images';
+            }
+        }
+    }
+
+    /**
+     * Clear results and files when mode changes
+     */
+    clearResults() {
+        // Clear files
+        this.files = [];
+        this.processedResults = [];
+        this.isProcessing = false;
+        
+        // Clear file input
+        if (this.fileInput) {
+            this.fileInput.value = '';
+        }
+        
+        // Remove file preview
+        const previewSection = document.getElementById('filePreview');
+        if (previewSection) {
+            previewSection.remove();
+        }
+        
+        // Remove results section
+        const resultsSection = document.getElementById('resultsSection');
+        if (resultsSection) {
+            resultsSection.remove();
+        }
+        
+        // Reset upload zone
+        const uploadZone = document.getElementById('uploadZone');
+        if (uploadZone) {
+            uploadZone.classList.remove('has-files');
+        }
+        
+        // Clear files grid
+        const filesGrid = document.getElementById('filesGrid');
+        if (filesGrid) {
+            filesGrid.innerHTML = '';
         }
     }
 
@@ -358,19 +449,35 @@ class ImageOptimizerApp {
     processSelectedFiles(files) {
         if (this.isProcessing) return;
         
-        // Enhanced file type validation
-        const validFiles = this.validateFiles(files);
-        
-        if (validFiles.length === 0) {
+        // Filter image files
+        const imageFiles = files.filter(file => {
+            const validTypes = [
+                'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 
+                'image/webp', 'image/bmp', 'image/tiff', 'image/svg+xml',
+                'image/heic', 'image/heif', 'image/avif'
+            ];
+            
+            const extension = file.name.split('.').pop().toLowerCase();
+            const validExtensions = [
+                'jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'tif',
+                'svg', 'heic', 'heif', 'avif', 'psd', 'raw', 'cr2', 'nef',
+                'orf', 'arw', 'dng', 'ico'
+            ];
+            
+            return validTypes.includes(file.type) || validExtensions.includes(extension);
+        });
+
+        if (imageFiles.length === 0) {
             this.showNotification('Please select valid image files', 'error');
             return;
         }
-        
-        if (validFiles.length !== files.length) {
-            this.showNotification(`${files.length - validFiles.length} unsupported files were ignored`, 'warning');
+
+        if (imageFiles.length !== files.length) {
+            this.showNotification(`${files.length - imageFiles.length} non-image files were ignored`, 'warning');
         }
-        
-        this.files = validFiles;
+
+        // Add to existing files instead of replacing
+        this.files = [...this.files, ...imageFiles];
         this.displayFilePreview();
     }
 
@@ -402,46 +509,53 @@ class ImageOptimizerApp {
     displayFilePreview() {
         if (!this.files.length) return;
 
-        // Create preview section if it doesn't exist
-        let previewSection = document.getElementById('filePreview');
-        if (!previewSection) {
-            previewSection = document.createElement('div');
-            previewSection.id = 'filePreview';
-            previewSection.className = 'file-preview-section';
-            this.uploadSection?.appendChild(previewSection);
-        }
+        const uploadZone = document.getElementById('uploadZone');
+        const filesGrid = document.getElementById('filesGrid');
+        const filesCount = document.getElementById('filesCount');
 
-        const fileList = this.files.map((file, index) => {
+        if (!uploadZone || !filesGrid || !filesCount) return;
+
+        // Update upload zone state
+        uploadZone.classList.add('has-files');
+        
+        // Update files count
+        filesCount.textContent = `${this.files.length} file${this.files.length !== 1 ? 's' : ''} selected`;
+
+        // Create file items using existing structure
+        const fileItems = this.files.map((file, index) => {
             const extension = file.name.split('.').pop().toLowerCase();
-            const formatInfo = this.formatDetails[extension] || {};
+            const sizeFormatted = this.formatBytes(file.size);
+            const thumbnailUrl = URL.createObjectURL(file);
             
             return `
-                <div class="file-preview-item" data-index="${index}">
-                    <div class="file-icon">${this.getFormatIcon(extension)}</div>
-                    <div class="file-info">
-                        <div class="file-name">${this.escapeHtml(file.name)}</div>
-                        <div class="file-details">
-                            <span class="file-size">${this.formatBytes(file.size)}</span>
-                            <span class="file-format">${formatInfo.name || extension.toUpperCase()}</span>
+                <div class="file-item fade-in-up" style="animation-delay: ${index * 0.05}s">
+                    <div class="file-thumbnail">
+                        <img src="${thumbnailUrl}" alt="${this.escapeHtml(file.name)}" class="thumbnail-image" 
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="file-icon-fallback" style="display: none;">${this.getFormatIcon(extension)}</div>
+                        
+                        <!-- Enhanced Progress Overlay -->
+                        <div class="upload-progress-overlay" id="progress-${index}">
+                            <div class="upload-progress-circle">
+                                <svg class="progress-ring" viewBox="0 0 60 60">
+                                    <circle class="progress-ring-circle" cx="30" cy="30" r="26" 
+                                            fill="transparent" stroke="white" stroke-width="4" 
+                                            stroke-dasharray="163.36" stroke-dashoffset="163.36"/>
+                                </svg>
+                                <span class="progress-percentage">0%</span>
+                            </div>
                         </div>
                     </div>
-                    <button class="remove-file-btn" onclick="optimizerApp.removeFile(${index})">✕</button>
+                    <div class="file-info">
+                        <div class="file-name" title="${this.escapeHtml(file.name)}">${this.escapeHtml(file.name)}</div>
+                        <div class="file-size">${sizeFormatted}</div>
+                    </div>
+                    <button class="remove-file-btn" onclick="optimizerApp.removeFile(${index})" title="Remove file">×</button>
                 </div>
             `;
         }).join('');
 
-        previewSection.innerHTML = `
-            <h3>📋 Files Ready (${this.files.length})</h3>
-            <div class="file-preview-list">${fileList}</div>
-            <div class="preview-actions">
-                <button class="btn btn-primary" onclick="optimizerApp.startProcessing()">
-                    ${this.currentMode === 'convert' ? '🔄 Convert Images' : '⚡ Optimize Images'}
-                </button>
-                <button class="btn btn-secondary" onclick="optimizerApp.clearFiles()">
-                    🗑️ Clear All
-                </button>
-            </div>
-        `;
+        filesGrid.innerHTML = fileItems;
     }
 
     /**
@@ -460,11 +574,24 @@ class ImageOptimizerApp {
      * Clear all files
      */
     clearFiles() {
+        // Clean up object URLs to prevent memory leaks
+        this.files.forEach((file, index) => {
+            const thumbnailImage = document.querySelector(`#progress-${index}`)?.parentElement?.querySelector('.thumbnail-image');
+            if (thumbnailImage && thumbnailImage.src.startsWith('blob:')) {
+                URL.revokeObjectURL(thumbnailImage.src);
+            }
+        });
+        
         this.files = [];
-        const previewSection = document.getElementById('filePreview');
-        if (previewSection) {
-            previewSection.remove();
-        }
+        
+        const uploadZone = document.getElementById('uploadZone');
+        const filesGrid = document.getElementById('filesGrid');
+        const filesCount = document.getElementById('filesCount');
+        
+        if (uploadZone) uploadZone.classList.remove('has-files');
+        if (filesGrid) filesGrid.innerHTML = '';
+        if (filesCount) filesCount.textContent = '0 files selected';
+        
         if (this.fileInput) {
             this.fileInput.value = '';
         }
@@ -732,15 +859,107 @@ class ImageOptimizerApp {
      * Show results section
      */
     showResults(result) {
-        if (this.processingSection) this.processingSection.style.display = 'none';
-        if (this.uploadSection) this.uploadSection.style.display = 'none';
-        if (this.resultsSection) this.resultsSection.style.display = 'block';
-        
+        // Create results section using existing styles
+        let resultsSection = document.getElementById('resultsSection');
+        if (!resultsSection) {
+            resultsSection = document.createElement('div');
+            resultsSection.id = 'resultsSection';
+            resultsSection.className = 'results-section';
+            document.querySelector('.main-content').appendChild(resultsSection);
+        }
+
         this.currentStep = 'results';
         this.processedResults = result;
         
-        this.displayResultsSummary(result);
-        this.displayResultsList(result);
+        // Use the existing results display format
+        const isSuccess = result.success && result.data;
+        const fileCount = result.type === 'batch' ? result.data.summary.successful : 1;
+        const downloadLinks = result.data.download_links || [];
+
+        resultsSection.innerHTML = `
+            <div style="padding: var(--space-2xl); text-align: center;">
+                <h2 style="font-size: var(--font-size-3xl); color: var(--gray-800); margin-bottom: var(--space-lg); display: flex; align-items: center; justify-content: center; gap: var(--space-sm);">
+                    🎉 ${this.currentMode === 'convert' ? 'Conversion' : 'Optimization'} Complete!
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-xl); max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <div style="text-align: center; padding: var(--space-lg); background: var(--gray-50); border-radius: var(--border-radius-lg); border: 1px solid var(--gray-200);">
+                        <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--primary-color); margin-bottom: var(--space-xs);">
+                            ${fileCount}
+                        </div>
+                        <div style="font-size: var(--font-size-sm); color: var(--gray-600);">
+                            Files ${this.currentMode === 'convert' ? 'Converted' : 'Optimized'}
+                        </div>
+                    </div>
+                    <div style="text-align: center; padding: var(--space-lg); background: var(--gray-50); border-radius: var(--border-radius-lg); border: 1px solid var(--gray-200);">
+                        <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--success-color); margin-bottom: var(--space-xs);">
+                            ${downloadLinks.length}
+                        </div>
+                        <div style="font-size: var(--font-size-sm); color: var(--gray-600);">
+                            Files Created
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: var(--space-md); justify-content: center; margin-bottom: var(--space-xl); flex-wrap: wrap;">
+                    ${downloadLinks.length > 1 ? `
+                        <button class="btn btn-primary" onclick="optimizerApp.downloadAll()">
+                            📦 Download All Files
+                        </button>
+                    ` : ''}
+                    <button class="btn btn-secondary" onclick="optimizerApp.processMore()">
+                        🔄 Process More Images
+                    </button>
+                </div>
+
+                <div style="display: grid; gap: var(--space-md); max-width: 800px; margin: 0 auto;">
+                    ${downloadLinks.map(link => `
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: white; padding: var(--space-md); border-radius: var(--border-radius); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);">
+                            <div style="display: flex; align-items: center; gap: var(--space-md);">
+                                <div style="font-size: var(--font-size-lg);">
+                                    ${this.getFormatIcon(link.format)}
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--gray-800); margin-bottom: var(--space-xs);">
+                                        ${link.format.toUpperCase()} Format
+                                    </div>
+                                    <div style="font-size: var(--font-size-sm); color: var(--gray-600);">
+                                        ${link.size}${link.savings !== 'thumbnail' ? ` • ${link.savings}% smaller` : ' • Thumbnail'}
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="${link.url}" class="btn btn-primary" download style="text-decoration: none;">
+                                📥 Download
+                            </a>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        // Scroll to results
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Process More Images - Connect to existing functionality
+     */
+    processMore() {
+        // Reset the application completely
+        this.clearFiles();
+        const resultsSection = document.getElementById('resultsSection');
+        if (resultsSection) {
+            resultsSection.remove();
+        }
+        
+        // Hide any progress overlays
+        this.hideUploadProgress();
+        
+        // Reset processing button
+        this.hideProcessing();
+        
+        // Scroll to upload section
+        document.getElementById('uploadSection').scrollIntoView({ behavior: 'smooth' });
     }
 
     /**
@@ -1257,7 +1476,57 @@ class ImageOptimizerApp {
 document.addEventListener('DOMContentLoaded', () => {
     window.optimizerApp = new ImageOptimizerApp();
     
-    // Add global error handler
+    // Override existing global functions to work with the app
+    window.originalSetMode = window.setMode;
+    window.originalToggleMode = window.toggleMode;
+    window.originalStartProcessing = window.startProcessing;
+    window.originalClearFiles = window.clearFiles;
+    window.originalProcessMore = window.processMore;
+    
+    // Bridge mode switching
+    window.setMode = function(mode) {
+        window.originalSetMode(mode);
+        if (window.optimizerApp) {
+            window.optimizerApp.currentMode = mode;
+            window.optimizerApp.handleModeChange();
+        }
+    };
+    
+    window.toggleMode = function() {
+        window.originalToggleMode();
+        if (window.optimizerApp) {
+            window.optimizerApp.currentMode = window.currentMode;
+            window.optimizerApp.handleModeChange();
+        }
+    };
+    
+    // Bridge processing
+    window.startProcessing = function() {
+        if (window.optimizerApp && window.optimizerApp.files.length > 0) {
+            window.optimizerApp.startProcessing();
+        } else {
+            window.originalStartProcessing();
+        }
+    };
+    
+    // Bridge file clearing
+    window.clearFiles = function() {
+        window.originalClearFiles();
+        if (window.optimizerApp) {
+            window.optimizerApp.clearFiles();
+        }
+    };
+    
+    // Bridge process more
+    window.processMore = function() {
+        if (window.optimizerApp) {
+            window.optimizerApp.processMore();
+        } else {
+            window.originalProcessMore();
+        }
+    };
+    
+    // Global error handlers
     window.addEventListener('error', (e) => {
         console.error('Global error:', e.error);
         if (window.optimizerApp) {
@@ -1265,7 +1534,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Add unhandled promise rejection handler
     window.addEventListener('unhandledrejection', (e) => {
         console.error('Unhandled promise rejection:', e.reason);
         if (window.optimizerApp) {
@@ -1273,6 +1541,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// Add helper methods for progress tracking
+ImageOptimizerApp.prototype.hideUploadProgress = function() {
+    this.files.forEach((file, index) => {
+        const progressOverlay = document.getElementById(`progress-${index}`);
+        if (progressOverlay) {
+            progressOverlay.style.display = 'none';
+            
+            // Reset progress circle
+            const circle = progressOverlay.querySelector('.progress-ring-circle');
+            const percentageText = progressOverlay.querySelector('.progress-percentage');
+            
+            if (circle && percentageText) {
+                circle.style.strokeDashoffset = 163.36; // Reset to 0%
+                percentageText.textContent = '0%';
+            }
+        }
+    });
+};
+
+ImageOptimizerApp.prototype.hideProcessing = function() {
+    const processBtn = document.getElementById('processBtn');
+    if (processBtn) {
+        processBtn.disabled = false;
+        
+        const iconText = this.currentMode === 'convert' ? '🔄' : '⚡';
+        const buttonText = this.currentMode === 'convert' ? 'Convert Images' : 'Optimize Images';
+        
+        processBtn.innerHTML = `
+            <span id="processBtnIcon">${iconText}</span>
+            <span id="processBtnText">${buttonText}</span>
+        `;
+    }
+};
 
 // Add CSS for notifications
 const notificationStyles = `

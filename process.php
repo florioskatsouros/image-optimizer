@@ -64,6 +64,13 @@ try {
 
     // Handle conversion mode options
     if ($mode === 'convert') {
+        // Convert mode specific options
+        $options = [
+            'mode' => $mode,
+            'quality' => isset($_POST['quality']) ? max(20, min(100, (int)$_POST['quality'])) : 80,
+            'create_thumbnail' => isset($_POST['create_thumbnail']) && $_POST['create_thumbnail'] === 'true'
+        ];
+        
         // Handle multiple format conversion
         if (isset($_POST['convert_to'])) {
             $convertTo = json_decode($_POST['convert_to'], true);
@@ -77,13 +84,22 @@ try {
             $options['output_format'] = $_POST['output_format'];
         }
         
-        // Disable auto WebP/AVIF creation in convert mode unless explicitly requested
-        if (!isset($_POST['create_webp'])) {
-            $options['create_webp'] = false;
+        // Check if we have a valid conversion target
+        if (empty($options['convert_to']) && empty($options['output_format'])) {
+            throw new Exception('No output format specified for conversion');
         }
-        if (!isset($_POST['create_avif'])) {
-            $options['create_avif'] = false;
-        }
+        
+    } else {
+        // Optimize mode (existing logic)
+        $options = [
+            'mode' => $mode,
+            'quality' => isset($_POST['quality']) ? max(20, min(100, (int)$_POST['quality'])) : 80,
+            'max_width' => isset($_POST['max_width']) && !empty($_POST['max_width']) ? max(100, min(8000, (int)$_POST['max_width'])) : null,
+            'max_height' => isset($_POST['max_height']) && !empty($_POST['max_height']) ? max(100, min(8000, (int)$_POST['max_height'])) : null,
+            'create_webp' => isset($_POST['create_webp']) && $_POST['create_webp'] === 'true',
+            'create_avif' => isset($_POST['create_avif']) && $_POST['create_avif'] === 'true',
+            'create_thumbnail' => isset($_POST['create_thumbnail']) && $_POST['create_thumbnail'] === 'true'
+        ];
     }
 
     // Initialize optimizer
