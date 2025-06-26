@@ -1003,9 +1003,27 @@
                 const extension = file.name.split('.').pop().toLowerCase();
                 const sizeFormatted = formatBytes(file.size);
                 
+                // Create thumbnail URL for image preview
+                const thumbnailUrl = URL.createObjectURL(file);
+                
                 return `
                     <div class="file-preview-item fade-in-up" style="animation-delay: ${index * 0.1}s">
-                        <div class="file-icon">${getFileIcon(extension)}</div>
+                        <div class="file-thumbnail">
+                            <img src="${thumbnailUrl}" alt="${file.name}" class="thumbnail-image" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="file-icon-fallback" style="display: none;">${getFileIcon(extension)}</div>
+                            <div class="upload-progress-overlay" style="display: none;">
+                                <div class="upload-progress-circle">
+                                    <svg class="progress-ring" width="40" height="40">
+                                        <circle class="progress-ring-circle" cx="20" cy="20" r="16" 
+                                                fill="transparent" stroke="#667eea" stroke-width="3" 
+                                                stroke-dasharray="100.48" stroke-dashoffset="100.48" 
+                                                transform="rotate(-90 20 20)"/>
+                                    </svg>
+                                    <span class="progress-percentage">0%</span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="file-info">
                             <div class="file-name" title="${file.name}">${file.name}</div>
                             <div class="file-details">
@@ -1034,7 +1052,7 @@
                 </div>
             `;
 
-            // Add file preview styles
+            // Add enhanced file preview styles
             addFilePreviewStyles();
         }
 
@@ -1057,6 +1075,68 @@
                     .file-preview-item:hover {
                         box-shadow: var(--shadow-md);
                         transform: translateY(-1px);
+                    }
+
+                    .file-thumbnail {
+                        position: relative;
+                        width: 60px;
+                        height: 60px;
+                        border-radius: var(--border-radius);
+                        overflow: hidden;
+                        background: var(--gray-100);
+                        flex-shrink: 0;
+                    }
+
+                    .thumbnail-image {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: var(--border-radius);
+                    }
+
+                    .file-icon-fallback {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: var(--font-size-xl);
+                        background: var(--gray-100);
+                    }
+
+                    .upload-progress-overlay {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.7);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: var(--border-radius);
+                    }
+
+                    .upload-progress-circle {
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    .progress-ring {
+                        transform: rotate(-90deg);
+                    }
+
+                    .progress-ring-circle {
+                        transition: stroke-dashoffset 0.3s ease;
+                    }
+
+                    .progress-percentage {
+                        position: absolute;
+                        font-size: 10px;
+                        font-weight: 600;
+                        color: white;
                     }
 
                     .file-icon {
@@ -1116,6 +1196,28 @@
                         background: #dc2626;
                         transform: scale(1.1);
                     }
+
+                    .file-upload-progress {
+                        background: var(--primary-color);
+                        height: 4px;
+                        border-radius: 2px;
+                        transition: width 0.3s ease;
+                        margin-top: 4px;
+                    }
+
+                    .uploading .file-thumbnail::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(102, 126, 234, 0.8);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: var(--border-radius);
+                    }
                 </style>
             `;
             document.head.insertAdjacentHTML('beforeend', styles);
@@ -1132,22 +1234,41 @@
             return icons[extension] || '📄';
         }
 
+        function clearFiles() {
+            // Clean up object URLs to prevent memory leaks
+            selectedFiles.forEach(file => {
+                const thumbnailElements = document.querySelectorAll('.thumbnail-image');
+                thumbnailElements.forEach(img => {
+                    if (img.src.startsWith('blob:')) {
+                        URL.revokeObjectURL(img.src);
+                    }
+                });
+            });
+            
+            selectedFiles = [];
+            const previewSection = document.getElementById('filePreview');
+            if (previewSection) {
+                previewSection.remove();
+            }
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput) {
+                fileInput.value = '';
+            }
+        }
+
         function removeFile(index) {
+            // Clean up object URL for the removed file
+            const thumbnailElements = document.querySelectorAll('.thumbnail-image');
+            if (thumbnailElements[index] && thumbnailElements[index].src.startsWith('blob:')) {
+                URL.revokeObjectURL(thumbnailElements[index].src);
+            }
+            
             selectedFiles.splice(index, 1);
             if (selectedFiles.length > 0) {
                 displayFilePreview();
             } else {
                 clearFiles();
             }
-        }
-
-        function clearFiles() {
-            selectedFiles = [];
-            const previewSection = document.getElementById('filePreview');
-            if (previewSection) {
-                previewSection.remove();
-            }
-            document.getElementById('fileInput').value = '';
         }
 
         function updateQualityDisplay() {
@@ -1190,6 +1311,9 @@
                 }
             }
 
+            // Show upload progress for each file
+            showUploadProgress();
+
             // Create form data
             const formData = new FormData();
             
@@ -1222,7 +1346,6 @@
                 formData.append('create_thumbnail', document.getElementById('convertThumbnail').checked);
                 
                 if (document.getElementById('convertMultiple').checked) {
-                    // Add multiple format logic here if needed
                     formData.append('convert_multiple', 'true');
                 }
             }
@@ -1230,23 +1353,99 @@
             // Show processing state
             showProcessing();
 
-            // Send request
-            fetch('api/process.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                hideProcessing();
-                if (data.success) {
-                    showResults(data);
-                } else {
-                    throw new Error(data.error || 'Processing failed');
+            // Send request with proper error handling
+            uploadWithProgress(formData)
+                .then(data => {
+                    hideProcessing();
+                    if (data && data.success) {
+                        showResults(data);
+                    } else {
+                        throw new Error(data?.error || 'Processing failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Processing error:', error);
+                    hideProcessing();
+                    hideUploadProgress();
+                    showNotification('Processing failed: ' + error.message, 'error');
+                });
+        }
+
+        function uploadWithProgress(formData) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                
+                // Track upload progress
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percentComplete = Math.round((e.loaded / e.total) * 100);
+                        updateUploadProgress(percentComplete);
+                    }
+                });
+                
+                // Handle response
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 200) {
+                        try {
+                            const result = JSON.parse(xhr.responseText);
+                            resolve(result);
+                        } catch (error) {
+                            reject(new Error('Failed to parse server response'));
+                        }
+                    } else {
+                        reject(new Error(`Server error: ${xhr.status} - ${xhr.statusText}`));
+                    }
+                });
+                
+                // Handle errors
+                xhr.addEventListener('error', () => {
+                    reject(new Error('Network error occurred. Please check your connection.'));
+                });
+                
+                // Handle timeout
+                xhr.addEventListener('timeout', () => {
+                    reject(new Error('Upload timed out. Please try again.'));
+                });
+                
+                // Configure and send request
+                xhr.timeout = 300000; // 5 minutes
+                xhr.open('POST', 'process.php');
+                xhr.send(formData);
+            });
+        }
+
+        function showUploadProgress() {
+            const previewItems = document.querySelectorAll('.file-preview-item');
+            previewItems.forEach(item => {
+                const overlay = item.querySelector('.upload-progress-overlay');
+                if (overlay) {
+                    overlay.style.display = 'flex';
                 }
-            })
-            .catch(error => {
-                hideProcessing();
-                showNotification('Processing failed: ' + error.message, 'error');
+            });
+        }
+
+        function updateUploadProgress(percentage) {
+            const previewItems = document.querySelectorAll('.file-preview-item');
+            previewItems.forEach(item => {
+                const circle = item.querySelector('.progress-ring-circle');
+                const percentageText = item.querySelector('.progress-percentage');
+                
+                if (circle && percentageText) {
+                    const circumference = 2 * Math.PI * 16; // radius = 16
+                    const offset = circumference - (percentage / 100) * circumference;
+                    circle.style.strokeDashoffset = offset;
+                    percentageText.textContent = percentage + '%';
+                }
+            });
+        }
+
+        function hideUploadProgress() {
+            const previewItems = document.querySelectorAll('.file-preview-item');
+            previewItems.forEach(item => {
+                const overlay = item.querySelector('.upload-progress-overlay');
+                if (overlay) {
+                    overlay.style.display = 'none';
+                }
             });
         }
 
@@ -1281,11 +1480,19 @@
             const processBtnIcon = document.getElementById('processBtnIcon');
             const processBtnText = document.getElementById('processBtnText');
             
-            processBtn.disabled = false;
-            processBtn.innerHTML = `
-                <span>${processBtnIcon.textContent}</span>
-                <span>${processBtnText.textContent}</span>
-            `;
+            // Check if elements exist before accessing them
+            if (processBtn) {
+                processBtn.disabled = false;
+                
+                // Safely get text content
+                const iconText = processBtnIcon ? processBtnIcon.textContent : (currentMode === 'convert' ? '🔄' : '⚡');
+                const buttonText = processBtnText ? processBtnText.textContent : (currentMode === 'convert' ? 'Convert Images' : 'Optimize Images');
+                
+                processBtn.innerHTML = `
+                    <span>${iconText}</span>
+                    <span>${buttonText}</span>
+                `;
+            }
         }
 
         function showResults(data) {
