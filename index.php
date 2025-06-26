@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎨 Image Optimizer Pro - Optimize & Convert Images</title>
+    <title> Image Optimizer Pro - Optimize & Convert Images</title>
     <meta name="description" content="Optimize and convert your images online. Support for 20+ formats including HEIC, RAW, PSD. Reduce file size up to 90% without losing quality.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
     <style>
         /* ============================================
-           🎨 Enhanced Image Optimizer Pro - Modern CSS
+            Enhanced Image Optimizer Pro - Modern CSS
            ============================================ */
 
         :root {
@@ -284,7 +284,7 @@
         }
 
         /* ============================================
-           📁 Upload Section
+           📁 Upload Section - Enhanced
            ============================================ */
 
         .upload-section {
@@ -301,6 +301,7 @@
             background: var(--gray-50);
             position: relative;
             overflow: hidden;
+            min-height: 200px;
         }
 
         .upload-zone:hover {
@@ -313,6 +314,29 @@
             border-color: var(--primary-color);
             background: rgba(102, 126, 234, 0.1);
             transform: scale(1.02);
+        }
+
+        /* Upload zone with files */
+        .upload-zone.has-files {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.05);
+            border-style: solid;
+        }
+
+        .upload-zone.has-files .upload-initial-content {
+            display: none;
+        }
+
+        .upload-zone.has-files .upload-files-content {
+            display: block;
+        }
+
+        .upload-initial-content {
+            display: block;
+        }
+
+        .upload-files-content {
+            display: none;
         }
 
         .upload-icon {
@@ -354,6 +378,202 @@
             font-size: var(--font-size-sm);
             color: var(--gray-600);
             margin-bottom: var(--space-xs);
+        }
+
+        /* Files display in upload zone */
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .file-item {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .file-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .file-thumbnail {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: var(--gray-100);
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-icon-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: var(--gray-100);
+            color: var(--gray-400);
+        }
+
+        .file-info {
+            padding: var(--space-sm);
+            text-align: left;
+        }
+
+        .file-name {
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--space-xs);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-size {
+            font-size: var(--font-size-xs);
+            color: var(--gray-500);
+        }
+
+        .remove-file-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(248, 113, 113, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+            transition: all var(--transition-fast);
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .file-item:hover .remove-file-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .remove-file-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Enhanced Progress Overlay */
+        .upload-progress-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(102, 126, 234, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(4px);
+        }
+
+        .upload-progress-circle {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .progress-ring {
+            width: 60px;
+            height: 60px;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke: white;
+            stroke-width: 4;
+            fill: transparent;
+            stroke-dasharray: 163.36; /* 2 * π * 26 */
+            stroke-dashoffset: 163.36;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        .progress-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 700;
+            font-size: var(--font-size-sm);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .add-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .add-more-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .files-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .files-count {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .clear-all-btn {
+            background: none;
+            border: none;
+            color: var(--error-color);
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+            padding: var(--space-xs);
+            border-radius: var(--border-radius);
+            transition: all var(--transition-fast);
+        }
+
+        .clear-all-btn:hover {
+            background: rgba(248, 113, 113, 0.1);
         }
 
         /* ============================================
@@ -434,7 +654,7 @@
             color: var(--gray-500);
         }
 
-        #qualityValue {
+        #qualityValue, #convertQualityValue {
             font-weight: 600;
             color: var(--primary-color);
         }
@@ -532,6 +752,35 @@
             transform: translateY(-1px);
         }
 
+        /* Hidden panels */
+        .convert-panel {
+            display: none;
+        }
+
+        .convert-panel.active {
+            display: block;
+        }
+
+        .optimize-panel.hidden {
+            display: none !important;
+        }
+
+        /* Format support badges */
+        .format-badge {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .format-badge.experimental {
+            background: var(--warning-color);
+        }
+
         /* ============================================
            📱 Responsive Design
            ============================================ */
@@ -575,6 +824,17 @@
             .toggle-switch-container {
                 order: -1;
             }
+
+            .files-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: var(--space-sm);
+            }
+
+            .files-summary {
+                flex-direction: column;
+                gap: var(--space-sm);
+                text-align: center;
+            }
         }
 
         /* ============================================
@@ -601,6 +861,11 @@
             }
         }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .fade-in-up {
             animation: fadeInUp 0.6s ease-out;
         }
@@ -609,33 +874,10 @@
             animation: pulse 2s infinite;
         }
 
-        /* Hidden panels */
-        .convert-panel {
-            display: none;
-        }
-
-        .convert-panel.active {
-            display: block;
-        }
-
-        .optimize-panel.hidden {
-            display: none !important;
-        }
-
-        /* Format support badges */
-        .format-badge {
-            display: inline-block;
-            background: var(--success-color);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: var(--font-size-xs);
-            font-weight: 600;
-            margin: 2px;
-        }
-
-        .format-badge.experimental {
-            background: var(--warning-color);
+        /* Notification styles */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
@@ -697,14 +939,30 @@
             <!-- Upload Section -->
             <section class="upload-section" id="uploadSection">
                 <div class="upload-zone" id="uploadZone">
-                    <div class="upload-icon">🖼️</div>
-                    <h2 id="uploadTitle">Drop your images here</h2>
-                    <p>or <span class="browse-text">click to browse</span></p>
-                    <div class="upload-info">
-                        <p>✅ Supported: <strong>JPG, PNG, WebP, GIF, AVIF, HEIC, RAW, PSD, TIFF, BMP</strong></p>
-                        <p>✅ Max size: <strong>100MB</strong> per image</p>
-                        <p>✅ Batch upload supported</p>
+                    <!-- Initial content (shown when no files) -->
+                    <div class="upload-initial-content" id="uploadInitialContent">
+                        <div class="upload-icon">🖼️</div>
+                        <h2 id="uploadTitle">Drop your images here</h2>
+                        <p>or <span class="browse-text">click to browse</span></p>
+                        <div class="upload-info">
+                            <p>✅ Supported: <strong>JPG, PNG, WebP, GIF, AVIF, HEIC, RAW, PSD, TIFF, BMP</strong></p>
+                            <p>✅ Max size: <strong>100MB</strong> per image</p>
+                            <p>✅ Batch upload supported</p>
+                        </div>
                     </div>
+
+                    <!-- Files content (shown when files are selected) -->
+                    <div class="upload-files-content" id="uploadFilesContent">
+                        <div class="files-summary">
+                            <span class="files-count" id="filesCount">0 files selected</span>
+                            <button class="clear-all-btn" onclick="clearFiles()">🗑️ Clear All</button>
+                        </div>
+                        <div class="files-grid" id="filesGrid"></div>
+                        <button class="add-more-btn" onclick="document.getElementById('fileInput').click()">
+                            ➕ Add More Images
+                        </button>
+                    </div>
+
                     <input type="file" id="fileInput" multiple accept="image/*,.heic,.heif,.psd,.raw,.cr2,.nef,.orf,.arw,.dng,.tiff,.tif" hidden>
                 </div>
 
@@ -839,7 +1097,12 @@
             const uploadZone = document.getElementById('uploadZone');
             
             fileInput.addEventListener('change', handleFileSelect);
-            uploadZone.addEventListener('click', () => fileInput.click());
+            uploadZone.addEventListener('click', (e) => {
+                // Only trigger file input if clicking on upload zone, not on buttons/thumbnails
+                if (e.target === uploadZone || uploadZone.contains(e.target) && !e.target.closest('button') && !e.target.closest('.file-item')) {
+                    fileInput.click();
+                }
+            });
             uploadZone.addEventListener('dragover', handleDragOver);
             uploadZone.addEventListener('dragleave', handleDragLeave);
             uploadZone.addEventListener('drop', handleDrop);
@@ -859,11 +1122,20 @@
         function setMode(mode) {
             currentMode = mode;
             updateModeDisplay();
+            clearResults(); // Clear results when mode changes
         }
 
         function toggleMode() {
             currentMode = currentMode === 'optimize' ? 'convert' : 'optimize';
             updateModeDisplay();
+            clearResults(); // Clear results when mode changes
+        }
+
+        function clearResults() {
+            const resultsSection = document.getElementById('resultsSection');
+            if (resultsSection) {
+                resultsSection.remove();
+            }
         }
 
         function updateModeDisplay() {
@@ -983,42 +1255,47 @@
                 showNotification(`${files.length - imageFiles.length} non-image files were ignored`, 'warning');
             }
 
-            selectedFiles = imageFiles;
-            displayFilePreview();
+            // Add to existing files instead of replacing
+            selectedFiles = [...selectedFiles, ...imageFiles];
+            displayFilesInUploadZone();
         }
 
-        function displayFilePreview() {
-            if (selectedFiles.length === 0) return;
+        function displayFilesInUploadZone() {
+            const uploadZone = document.getElementById('uploadZone');
+            const filesGrid = document.getElementById('filesGrid');
+            const filesCount = document.getElementById('filesCount');
 
-            // Create or update file preview
-            let previewSection = document.getElementById('filePreview');
-            if (!previewSection) {
-                previewSection = document.createElement('div');
-                previewSection.id = 'filePreview';
-                previewSection.className = 'file-preview-section';
-                document.getElementById('uploadSection').appendChild(previewSection);
+            if (selectedFiles.length === 0) {
+                uploadZone.classList.remove('has-files');
+                return;
             }
 
-            const fileList = selectedFiles.map((file, index) => {
+            // Update upload zone state
+            uploadZone.classList.add('has-files');
+            
+            // Update files count
+            filesCount.textContent = `${selectedFiles.length} file${selectedFiles.length !== 1 ? 's' : ''} selected`;
+
+            // Create file items
+            const fileItems = selectedFiles.map((file, index) => {
                 const extension = file.name.split('.').pop().toLowerCase();
                 const sizeFormatted = formatBytes(file.size);
-                
-                // Create thumbnail URL for image preview
                 const thumbnailUrl = URL.createObjectURL(file);
                 
                 return `
-                    <div class="file-preview-item fade-in-up" style="animation-delay: ${index * 0.1}s">
+                    <div class="file-item fade-in-up" style="animation-delay: ${index * 0.05}s">
                         <div class="file-thumbnail">
                             <img src="${thumbnailUrl}" alt="${file.name}" class="thumbnail-image" 
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="file-icon-fallback" style="display: none;">${getFileIcon(extension)}</div>
-                            <div class="upload-progress-overlay" style="display: none;">
+                            
+                            <!-- Enhanced Progress Overlay -->
+                            <div class="upload-progress-overlay" id="progress-${index}">
                                 <div class="upload-progress-circle">
-                                    <svg class="progress-ring" width="40" height="40">
-                                        <circle class="progress-ring-circle" cx="20" cy="20" r="16" 
-                                                fill="transparent" stroke="#667eea" stroke-width="3" 
-                                                stroke-dasharray="100.48" stroke-dashoffset="100.48" 
-                                                transform="rotate(-90 20 20)"/>
+                                    <svg class="progress-ring" viewBox="0 0 60 60">
+                                        <circle class="progress-ring-circle" cx="30" cy="30" r="26" 
+                                                fill="transparent" stroke="white" stroke-width="4" 
+                                                stroke-dasharray="163.36" stroke-dashoffset="163.36"/>
                                     </svg>
                                     <span class="progress-percentage">0%</span>
                                 </div>
@@ -1026,201 +1303,14 @@
                         </div>
                         <div class="file-info">
                             <div class="file-name" title="${file.name}">${file.name}</div>
-                            <div class="file-details">
-                                <span class="file-size">${sizeFormatted}</span>
-                                <span class="format-badge">${extension.toUpperCase()}</span>
-                            </div>
+                            <div class="file-size">${sizeFormatted}</div>
                         </div>
                         <button class="remove-file-btn" onclick="removeFile(${index})" title="Remove file">×</button>
                     </div>
                 `;
             }).join('');
 
-            previewSection.innerHTML = `
-                <div style="background: var(--gray-50); border-radius: var(--border-radius-lg); padding: var(--space-lg); margin-top: var(--space-lg); border: 1px solid var(--gray-200);">
-                    <h3 style="color: var(--gray-800); margin-bottom: var(--space-md); font-weight: 600;">
-                        📋 Files Ready (${selectedFiles.length})
-                    </h3>
-                    <div class="file-preview-list" style="display: grid; gap: var(--space-sm); margin-bottom: var(--space-lg);">
-                        ${fileList}
-                    </div>
-                    <div class="preview-actions" style="display: flex; gap: var(--space-md); justify-content: center;">
-                        <button class="btn btn-secondary" onclick="clearFiles()">
-                            🗑️ Clear All
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            // Add enhanced file preview styles
-            addFilePreviewStyles();
-        }
-
-        function addFilePreviewStyles() {
-            if (document.getElementById('filePreviewStyles')) return;
-
-            const styles = `
-                <style id="filePreviewStyles">
-                    .file-preview-item {
-                        display: flex;
-                        align-items: center;
-                        gap: var(--space-md);
-                        background: white;
-                        padding: var(--space-md);
-                        border-radius: var(--border-radius);
-                        border: 1px solid var(--gray-200);
-                        transition: all var(--transition-fast);
-                    }
-
-                    .file-preview-item:hover {
-                        box-shadow: var(--shadow-md);
-                        transform: translateY(-1px);
-                    }
-
-                    .file-thumbnail {
-                        position: relative;
-                        width: 60px;
-                        height: 60px;
-                        border-radius: var(--border-radius);
-                        overflow: hidden;
-                        background: var(--gray-100);
-                        flex-shrink: 0;
-                    }
-
-                    .thumbnail-image {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                        border-radius: var(--border-radius);
-                    }
-
-                    .file-icon-fallback {
-                        width: 100%;
-                        height: 100%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: var(--font-size-xl);
-                        background: var(--gray-100);
-                    }
-
-                    .upload-progress-overlay {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background: rgba(0, 0, 0, 0.7);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border-radius: var(--border-radius);
-                    }
-
-                    .upload-progress-circle {
-                        position: relative;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    }
-
-                    .progress-ring {
-                        transform: rotate(-90deg);
-                    }
-
-                    .progress-ring-circle {
-                        transition: stroke-dashoffset 0.3s ease;
-                    }
-
-                    .progress-percentage {
-                        position: absolute;
-                        font-size: 10px;
-                        font-weight: 600;
-                        color: white;
-                    }
-
-                    .file-icon {
-                        width: 40px;
-                        height: 40px;
-                        background: var(--gray-100);
-                        border-radius: var(--border-radius);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: var(--font-size-lg);
-                        flex-shrink: 0;
-                    }
-
-                    .file-info {
-                        flex-grow: 1;
-                        min-width: 0;
-                    }
-
-                    .file-name {
-                        font-weight: 600;
-                        color: var(--gray-800);
-                        margin-bottom: var(--space-xs);
-                        word-break: break-all;
-                        font-size: var(--font-size-sm);
-                    }
-
-                    .file-details {
-                        display: flex;
-                        gap: var(--space-md);
-                        font-size: var(--font-size-sm);
-                        color: var(--gray-600);
-                        align-items: center;
-                    }
-
-                    .file-size {
-                        color: var(--gray-500);
-                    }
-
-                    .remove-file-btn {
-                        background: var(--error-color);
-                        color: white;
-                        border: none;
-                        border-radius: 50%;
-                        width: 24px;
-                        height: 24px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        cursor: pointer;
-                        font-size: var(--font-size-sm);
-                        transition: all var(--transition-fast);
-                        flex-shrink: 0;
-                    }
-
-                    .remove-file-btn:hover {
-                        background: #dc2626;
-                        transform: scale(1.1);
-                    }
-
-                    .file-upload-progress {
-                        background: var(--primary-color);
-                        height: 4px;
-                        border-radius: 2px;
-                        transition: width 0.3s ease;
-                        margin-top: 4px;
-                    }
-
-                    .uploading .file-thumbnail::after {
-                        content: '';
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background: rgba(102, 126, 234, 0.8);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border-radius: var(--border-radius);
-                    }
-                </style>
-            `;
-            document.head.insertAdjacentHTML('beforeend', styles);
+            filesGrid.innerHTML = fileItems;
         }
 
         function getFileIcon(extension) {
@@ -1236,20 +1326,18 @@
 
         function clearFiles() {
             // Clean up object URLs to prevent memory leaks
-            selectedFiles.forEach(file => {
-                const thumbnailElements = document.querySelectorAll('.thumbnail-image');
-                thumbnailElements.forEach(img => {
-                    if (img.src.startsWith('blob:')) {
-                        URL.revokeObjectURL(img.src);
-                    }
-                });
+            selectedFiles.forEach((file, index) => {
+                const thumbnailImage = document.querySelector(`#progress-${index}`)?.parentElement?.querySelector('.thumbnail-image');
+                if (thumbnailImage && thumbnailImage.src.startsWith('blob:')) {
+                    URL.revokeObjectURL(thumbnailImage.src);
+                }
             });
             
             selectedFiles = [];
-            const previewSection = document.getElementById('filePreview');
-            if (previewSection) {
-                previewSection.remove();
-            }
+            
+            const uploadZone = document.getElementById('uploadZone');
+            uploadZone.classList.remove('has-files');
+            
             const fileInput = document.getElementById('fileInput');
             if (fileInput) {
                 fileInput.value = '';
@@ -1258,17 +1346,13 @@
 
         function removeFile(index) {
             // Clean up object URL for the removed file
-            const thumbnailElements = document.querySelectorAll('.thumbnail-image');
-            if (thumbnailElements[index] && thumbnailElements[index].src.startsWith('blob:')) {
-                URL.revokeObjectURL(thumbnailElements[index].src);
+            const thumbnailImage = document.querySelector(`#progress-${index}`)?.parentElement?.querySelector('.thumbnail-image');
+            if (thumbnailImage && thumbnailImage.src.startsWith('blob:')) {
+                URL.revokeObjectURL(thumbnailImage.src);
             }
             
             selectedFiles.splice(index, 1);
-            if (selectedFiles.length > 0) {
-                displayFilePreview();
-            } else {
-                clearFiles();
-            }
+            displayFilesInUploadZone();
         }
 
         function updateQualityDisplay() {
@@ -1415,36 +1499,36 @@
         }
 
         function showUploadProgress() {
-            const previewItems = document.querySelectorAll('.file-preview-item');
-            previewItems.forEach(item => {
-                const overlay = item.querySelector('.upload-progress-overlay');
-                if (overlay) {
-                    overlay.style.display = 'flex';
+            selectedFiles.forEach((file, index) => {
+                const progressOverlay = document.getElementById(`progress-${index}`);
+                if (progressOverlay) {
+                    progressOverlay.style.display = 'flex';
                 }
             });
         }
 
         function updateUploadProgress(percentage) {
-            const previewItems = document.querySelectorAll('.file-preview-item');
-            previewItems.forEach(item => {
-                const circle = item.querySelector('.progress-ring-circle');
-                const percentageText = item.querySelector('.progress-percentage');
-                
-                if (circle && percentageText) {
-                    const circumference = 2 * Math.PI * 16; // radius = 16
-                    const offset = circumference - (percentage / 100) * circumference;
-                    circle.style.strokeDashoffset = offset;
-                    percentageText.textContent = percentage + '%';
+            selectedFiles.forEach((file, index) => {
+                const progressOverlay = document.getElementById(`progress-${index}`);
+                if (progressOverlay) {
+                    const circle = progressOverlay.querySelector('.progress-ring-circle');
+                    const percentageText = progressOverlay.querySelector('.progress-percentage');
+                    
+                    if (circle && percentageText) {
+                        const circumference = 2 * Math.PI * 26; // radius = 26
+                        const offset = circumference - (percentage / 100) * circumference;
+                        circle.style.strokeDashoffset = offset;
+                        percentageText.textContent = percentage + '%';
+                    }
                 }
             });
         }
 
         function hideUploadProgress() {
-            const previewItems = document.querySelectorAll('.file-preview-item');
-            previewItems.forEach(item => {
-                const overlay = item.querySelector('.upload-progress-overlay');
-                if (overlay) {
-                    overlay.style.display = 'none';
+            selectedFiles.forEach((file, index) => {
+                const progressOverlay = document.getElementById(`progress-${index}`);
+                if (progressOverlay) {
+                    progressOverlay.style.display = 'none';
                 }
             });
         }
@@ -1460,19 +1544,6 @@
                 "></div>
                 Processing...
             `;
-
-            // Add spinner animation
-            if (!document.getElementById('spinnerStyles')) {
-                const spinnerStyles = `
-                    <style id="spinnerStyles">
-                        @keyframes spin {
-                            0% { transform: rotate(0deg); }
-                            100% { transform: rotate(360deg); }
-                        }
-                    </style>
-                `;
-                document.head.insertAdjacentHTML('beforeend', spinnerStyles);
-            }
         }
 
         function hideProcessing() {
@@ -1480,11 +1551,9 @@
             const processBtnIcon = document.getElementById('processBtnIcon');
             const processBtnText = document.getElementById('processBtnText');
             
-            // Check if elements exist before accessing them
             if (processBtn) {
                 processBtn.disabled = false;
                 
-                // Safely get text content
                 const iconText = processBtnIcon ? processBtnIcon.textContent : (currentMode === 'convert' ? '🔄' : '⚡');
                 const buttonText = processBtnText ? processBtnText.textContent : (currentMode === 'convert' ? 'Convert Images' : 'Optimize Images');
                 
@@ -1621,19 +1690,6 @@
                     notification.remove();
                 }
             }, 5000);
-
-            // Add animation styles if not already present
-            if (!document.getElementById('notificationStyles')) {
-                const styles = `
-                    <style id="notificationStyles">
-                        @keyframes slideInRight {
-                            from { transform: translateX(100%); opacity: 0; }
-                            to { transform: translateX(0); opacity: 1; }
-                        }
-                    </style>
-                `;
-                document.head.insertAdjacentHTML('beforeend', styles);
-            }
         }
 
         function getNotificationIcon(type) {
