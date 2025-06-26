@@ -1,0 +1,42 @@
+# 🎨 Image Optimizer Pro - Render.com Configuration
+services:
+  - type: web
+    name: image-optimizer-pro
+    env: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    region: frankfurt  # Κοντά στην Ελλάδα
+    
+    # Environment variables
+    envVars:
+      - key: PHP_OPCACHE_ENABLE
+        value: "1"
+      - key: APACHE_DOCUMENT_ROOT
+        value: "/var/www/html"
+      - key: TZ
+        value: "Europe/Athens"
+    
+    # Auto-deploy settings
+    autoDeploy: true
+    
+    # Build settings
+    buildCommand: |
+      echo "Building Image Optimizer Pro..."
+      
+    # Health check
+    healthCheckPath: /
+    
+    # Disk space (for file uploads/processing)
+    disk:
+      name: image-optimizer-storage
+      mountPath: /var/www/html/uploads
+      sizeGB: 1
+
+# Optional: Add a cron job for cleanup (requires paid plan)
+# - type: cron
+#   name: cleanup-old-files
+#   env: docker
+#   dockerfilePath: ./Dockerfile
+#   schedule: "0 2 * * *"  # Run daily at 2 AM
+#   buildCommand: php -r "require 'vendor/autoload.php'; use ImageOptimizer\ImageOptimizer; (new ImageOptimizer())->cleanupOldFiles();"

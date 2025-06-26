@@ -1,0 +1,63 @@
+# 🎨 Image Optimizer Pro - Docker Ignore File
+
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+CHANGELOG.md
+docs/
+
+# Development files
+.env
+.env.local
+.env.example
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (if any)
+node_modules/
+npm-debug.log*
+
+# PHP development
+phpunit.xml
+phpcs.xml
+.phpunit.result.cache
+
+# Testing
+tests/
+coverage/
+
+# Temporary files
+temp/*
+uploads/*
+optimized/*
+logs/*
+
+# Keep directory structure but ignore contents
+!temp/.gitkeep
+!uploads/.gitkeep
+!optimized/.gitkeep
+!logs/.gitkeep
+
+# Build files
+docker-compose.yml
+docker-compose.override.yml
+Dockerfile.dev
+
+# Backup files
+*.bak
+*.backup
+*.old
