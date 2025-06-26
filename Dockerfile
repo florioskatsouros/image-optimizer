@@ -44,16 +44,17 @@ COPY . .
 
 # Create necessary directories and set permissions
 RUN mkdir -p uploads optimized temp logs \
-    && chown -R www-data:www-data uploads optimized temp logs \
-    && chmod -R 755 uploads optimized temp logs \
     && chown -R www-data:www-data /var/www/html \
-    && chmod -R 644 /var/www/html \
-    && chmod -R 755 /var/www/html/uploads /var/www/html/optimized /var/www/html/temp /var/www/html/logs
+    && find /var/www/html -type f -exec chmod 644 {} \; \
+    && find /var/www/html -type d -exec chmod 755 {} \; \
+    && chmod -R 755 uploads optimized temp logs \
+    && chmod 644 .htaccess \
+    && chmod 755 /var/www/html
 
 # Copy custom Apache configuration
 COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
 
-# Copy custom PHP configuration
+# Copy custom PHP configuration  
 COPY docker/php.ini /usr/local/etc/php/conf.d/app.ini
 
 # Expose port 80
