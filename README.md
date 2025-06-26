@@ -21,6 +21,7 @@
 
 ## 🚀 Why Choose Image Optimizer Pro?
 
+
 | Feature | This Solution | TinyPNG | Squoosh | ImageOptim | Others |
 |---------|---------------|---------|---------|------------|---------|
 | **Setup Time** | 🟢 30 seconds | 🟡 Account needed | 🟢 Web only | 🔴 Desktop app | 🔴 Complex |
