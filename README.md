@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎨 Enhanced Image Optimizer Pro
+#  Enhanced Image Optimizer Pro
 
 [![Free Alternative](https://img.shields.io/badge/🆓%20FREE%20Alternative%20to-TinyPNG%20%26%20Photoshop-brightgreen?style=for-the-badge)](https://github.com/florioskatsouros/image-optimizer)
 [![Format Support](https://img.shields.io/badge/FORMATS-8+-blue?style=for-the-badge)](https://github.com/florioskatsouros/image-optimizer)

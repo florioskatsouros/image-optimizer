@@ -949,8 +949,10 @@
                     <input type="file" id="fileInput" multiple accept="image/*,.heic,.heif,.psd,.raw,.cr2,.nef,.orf,.arw,.dng,.tiff,.tif" hidden>
                 </div>
 
-                
-
+                <!-- FIXED: Optimize Options Panel -->
+                <div class="options-panel" id="optimizePanel">
+                    <h3>⚡ Optimization Options</h3>
+                    <div class="options-grid">
                         <div class="option-group">
                             <label for="maxWidth">Max Width (optional)</label>
                             <select id="maxWidth">
@@ -1022,7 +1024,6 @@
                         <div class="option-group">
                             <label>Additional Options</label>
                             <div class="checkbox-group">
-                                
                                 <label class="checkbox">
                                     <input type="checkbox" id="convertThumbnail">
                                     <span>Create thumbnail</span>
@@ -1059,27 +1060,36 @@
             const fileInput = document.getElementById('fileInput');
             const uploadZone = document.getElementById('uploadZone');
             
-            fileInput.addEventListener('change', handleFileSelect);
-            uploadZone.addEventListener('click', (e) => {
-                // Only trigger file input if clicking on upload zone, not on buttons/thumbnails
-                if (e.target === uploadZone || uploadZone.contains(e.target) && !e.target.closest('button') && !e.target.closest('.file-item')) {
-                    fileInput.click();
-                }
-            });
-            uploadZone.addEventListener('dragover', handleDragOver);
-            uploadZone.addEventListener('dragleave', handleDragLeave);
-            uploadZone.addEventListener('drop', handleDrop);
+            if (fileInput) fileInput.addEventListener('change', handleFileSelect);
+            if (uploadZone) {
+                uploadZone.addEventListener('click', (e) => {
+                    if (e.target === uploadZone || uploadZone.contains(e.target) && !e.target.closest('button') && !e.target.closest('.file-item')) {
+                        fileInput?.click();
+                    }
+                });
+                uploadZone.addEventListener('dragover', handleDragOver);
+                uploadZone.addEventListener('dragleave', handleDragLeave);
+                uploadZone.addEventListener('drop', handleDrop);
+            }
             
             // Prevent default drag behaviors
             document.addEventListener('dragover', e => e.preventDefault());
             document.addEventListener('drop', e => e.preventDefault());
             
-            // Quality sliders
-            document.getElementById('quality').addEventListener('input', updateQualityDisplay);
-            document.getElementById('convertQuality').addEventListener('input', updateConvertQualityDisplay);
+            // Quality sliders - ΠΡΟΣΘΕΤΩ ΕΛΕΓΧΟΥΣ
+            const qualitySlider = document.getElementById('quality');
+            const convertQualitySlider = document.getElementById('convertQuality');
+
+            
             
             // Max width select
-            document.getElementById('maxWidth').addEventListener('change', handleMaxWidthChange);
+            const maxWidthSelect = document.getElementById('maxWidth');
+            if (maxWidthSelect) maxWidthSelect.addEventListener('change', handleMaxWidthChange);
+
+            if (convertQualitySlider) {
+                convertQualitySlider.addEventListener('input', updateConvertQualityDisplay);
+                updateConvertQualityDisplay(); // Αρχικοποίηση μόνο για το convert
+            }
         }
 
         // Enhanced Mode Switching Functions with Complete Clear
@@ -1126,49 +1136,57 @@
 
             if (currentMode === 'optimize') {
                 // Update mode buttons
-                optimizeMode.classList.add('active');
-                convertMode.classList.remove('active');
+                if (optimizeMode) optimizeMode.classList.add('active');
+                if (convertMode) convertMode.classList.remove('active');
                 
                 // Update toggle switch
-                toggleSwitch.classList.remove('convert-mode');
-                toggleIcon.textContent = '⚡';
+                if (toggleSwitch) toggleSwitch.classList.remove('convert-mode');
+                if (toggleIcon) toggleIcon.textContent = '⚡';
                 
-                // Update panels - show optimize, hide convert
-                optimizePanel.style.display = 'block';
-                optimizePanel.classList.remove('hidden');
-                convertPanel.style.display = 'none';
-                convertPanel.classList.remove('active');
+                // Update panels - ΠΡΟΣΘΕΤΩ ΕΛΕΓΧΟΥΣ
+                if (optimizePanel) {
+                    optimizePanel.style.display = 'block';
+                    optimizePanel.classList.remove('hidden');
+                }
+                if (convertPanel) {
+                    convertPanel.style.display = 'none';
+                    convertPanel.classList.remove('active');
+                }
                 
                 // Update descriptions
-                modeDescription.textContent = 'Compress images while maintaining quality. Supports JPG, PNG, WebP, AVIF, HEIC, RAW, and more.';
-                uploadTitle.textContent = 'Drop your images here';
+                if (modeDescription) modeDescription.textContent = 'Compress images while maintaining quality. Supports JPG, PNG, WebP, AVIF, HEIC, RAW, and more.';
+                if (uploadTitle) uploadTitle.textContent = 'Drop your images here';
                 
                 // Update button
-                processBtnIcon.textContent = '⚡';
-                processBtnText.textContent = 'Optimize Images';
+                if (processBtnIcon) processBtnIcon.textContent = '⚡';
+                if (processBtnText) processBtnText.textContent = 'Optimize Images';
                 
             } else {
                 // Update mode buttons
-                optimizeMode.classList.remove('active');
-                convertMode.classList.add('active');
+                if (optimizeMode) optimizeMode.classList.remove('active');
+                if (convertMode) convertMode.classList.add('active');
                 
                 // Update toggle switch
-                toggleSwitch.classList.add('convert-mode');
-                toggleIcon.textContent = '🔄';
+                if (toggleSwitch) toggleSwitch.classList.add('convert-mode');
+                if (toggleIcon) toggleIcon.textContent = '🔄';
                 
-                // Update panels - hide optimize, show convert
-                optimizePanel.style.display = 'none';
-                optimizePanel.classList.add('hidden');
-                convertPanel.style.display = 'block';
-                convertPanel.classList.add('active');
+                // Update panels
+                if (optimizePanel) {
+                    optimizePanel.style.display = 'none';
+                    optimizePanel.classList.add('hidden');
+                }
+                if (convertPanel) {
+                    convertPanel.style.display = 'block';
+                    convertPanel.classList.add('active');
+                }
                 
                 // Update descriptions
-                modeDescription.textContent = 'Convert images between different formats. Support for web optimization, print preparation, and format standardization.';
-                uploadTitle.textContent = 'Drop images to convert';
+                if (modeDescription) modeDescription.textContent = 'Convert images between different formats. Support for web optimization, print preparation, and format standardization.';
+                if (uploadTitle) uploadTitle.textContent = 'Drop images to convert';
                 
                 // Update button
-                processBtnIcon.textContent = '🔄';
-                processBtnText.textContent = 'Convert Images';
+                if (processBtnIcon) processBtnIcon.textContent = '🔄';
+                if (processBtnText) processBtnText.textContent = 'Convert Images';
             }
         }
 
@@ -1341,11 +1359,7 @@
             displayFilesInUploadZone();
         }
 
-        function updateQualityDisplay() {
-            const quality = document.getElementById('quality');
-            const qualityValue = document.getElementById('qualityValue');
-            qualityValue.textContent = quality.value + '%';
-        }
+       
 
         function updateConvertQualityDisplay() {
             const quality = document.getElementById('convertQuality');
@@ -1374,8 +1388,8 @@
 
             // Validate options based on mode
             if (currentMode === 'convert') {
-                const outputFormat = document.getElementById('outputFormat').value;
-                if (!outputFormat) {
+                const outputFormat = document.getElementById('outputFormat');
+                if (!outputFormat || !outputFormat.value) {
                     showNotification('Please select an output format', 'warning');
                     return;
                 }
@@ -1397,33 +1411,42 @@
             
             // Add options based on mode
             if (currentMode === 'optimize') {
-                formData.append('quality', document.getElementById('quality').value);
-                const maxWidth = document.getElementById('maxWidth').value;
-                if (maxWidth === 'custom') {
-                    const customWidth = document.getElementById('customWidth').value;
-                    if (customWidth) {
-                        formData.append('max_width', customWidth);
-                    }
-                } else if (maxWidth) {
-                    formData.append('max_width', maxWidth);
-                }
-                formData.append('create_webp', document.getElementById('createWebp').checked);
-                formData.append('create_avif', document.getElementById('createAvif').checked);
-                formData.append('create_thumbnail', document.getElementById('createThumbnail').checked);
-            } else {
-                formData.append('output_format', document.getElementById('outputFormat').value);
-                formData.append('quality', document.getElementById('convertQuality').value);
-                formData.append('create_thumbnail', document.getElementById('convertThumbnail').checked);
+                // ΑΦΑΙΡΩ ΤΗΝ ΑΝΑΦΟΡΑ ΣΤΟ quality slider
+                formData.append('quality', 80); // Default value
                 
-                if (document.getElementById('convertMultiple').checked) {
-                    formData.append('convert_multiple', 'true');
+                const maxWidth = document.getElementById('maxWidth');
+                if (maxWidth && maxWidth.value) {
+                    if (maxWidth.value === 'custom') {
+                        const customWidth = document.getElementById('customWidth');
+                        if (customWidth && customWidth.value) {
+                            formData.append('max_width', customWidth.value);
+                        }
+                    } else {
+                        formData.append('max_width', maxWidth.value);
+                    }
                 }
+                
+                const createWebp = document.getElementById('createWebp');
+                if (createWebp) formData.append('create_webp', createWebp.checked);
+                
+                const createThumbnail = document.getElementById('createThumbnail');
+                if (createThumbnail) formData.append('create_thumbnail', createThumbnail.checked);
+                
+            } else {
+                const outputFormat = document.getElementById('outputFormat');
+                if (outputFormat) formData.append('output_format', outputFormat.value);
+                
+                const convertQuality = document.getElementById('convertQuality');
+                formData.append('quality', convertQuality ? convertQuality.value : 80);
+                
+                const convertThumbnail = document.getElementById('convertThumbnail');
+                if (convertThumbnail) formData.append('create_thumbnail', convertThumbnail.checked);
             }
 
             // Show processing state
             showProcessing();
 
-            // Send request with proper error handling
+            // Send request
             uploadWithProgress(formData)
                 .then(data => {
                     hideProcessing();
