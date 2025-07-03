@@ -39,7 +39,7 @@ class ImageOptimizerApp {
         
         // Options - Convert Mode
         this.outputFormatSelect = document.getElementById('outputFormat');
-        this.convertQualitySlider = document.getElementById('convertQuality');
+        
         this.convertQualityValue = document.getElementById('convertQualityValue');
         this.convertToMultiple = document.getElementById('convertMultiple');
         this.convertThumbnail = document.getElementById('convertThumbnail');
@@ -268,9 +268,7 @@ class ImageOptimizerApp {
             this.handleModeChange();
         };
         
-        // Quality sliders - Support both optimize and convert mode sliders
-        this.qualitySlider?.addEventListener('input', () => this.updateQualityDisplay());
-        this.convertQualitySlider?.addEventListener('input', () => this.updateConvertQualityDisplay());
+       
         
         // Max width select
         this.maxWidthSelect?.addEventListener('change', () => this.handleMaxWidthChange());
@@ -292,15 +290,7 @@ class ImageOptimizerApp {
         document.addEventListener('keydown', (e) => this.handleKeyboard(e));
     }
 
-    /**
-     * Update convert quality display
-     */
-    updateConvertQualityDisplay() {
-        if (!this.convertQualitySlider || !this.convertQualityValue) return;
-        
-        const value = this.convertQualitySlider.value;
-        this.convertQualityValue.textContent = `${value}%`;
-    }
+    
 
     /**
      * Handle mode change between optimize and convert
@@ -659,7 +649,7 @@ class ImageOptimizerApp {
     getProcessingOptions() {
         if (this.currentMode === 'optimize') {
             return {
-                quality: this.qualitySlider?.value || 80,
+                quality: this.qualitySlider?.value || 100,
                 max_width: this.getMaxWidth(),
                 create_webp: this.createWebpCheck?.checked || false,
                 create_avif: this.createAvifCheck?.checked || false,
@@ -681,7 +671,7 @@ class ImageOptimizerApp {
                 
                 return {
                     convert_to: selectedFormats,
-                    quality: this.qualitySlider?.value || 80
+                    quality: this.qualitySlider?.value || 100
                 };
             } else {
                 // Single format conversion
@@ -694,7 +684,7 @@ class ImageOptimizerApp {
                 
                 return {
                     output_format: outputFormat,
-                    quality: this.qualitySlider?.value || 80
+                    quality: this.qualitySlider?.value || 100
                 };
             }
         }

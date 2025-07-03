@@ -323,7 +323,7 @@ function buildProcessingOptions($mode, $postData) {
     
     if ($mode === 'convert') {
         // Handle conversion options
-        $options['quality'] = isset($postData['quality']) ? max(20, min(100, (int)$postData['quality'])) : 80;
+        $options['quality'] = isset($postData['quality']) ? max(20, min(100, (int)$postData['quality'])) : 100;
         $options['create_thumbnail'] = isset($postData['create_thumbnail']) && $postData['create_thumbnail'] === 'true';
         
         // Handle multiple format conversion
@@ -346,7 +346,7 @@ function buildProcessingOptions($mode, $postData) {
         
     } else {
         // Optimize mode options
-        $options['quality'] = isset($postData['quality']) ? max(20, min(100, (int)$postData['quality'])) : 80;
+        $options['quality'] = isset($postData['quality']) ? max(20, min(100, (int)$postData['quality'])) : 100;
         $options['max_width'] = isset($postData['max_width']) && !empty($postData['max_width']) ? max(100, min(8000, (int)$postData['max_width'])) : null;
         $options['max_height'] = isset($postData['max_height']) && !empty($postData['max_height']) ? max(100, min(8000, (int)$postData['max_height'])) : null;
         $options['create_webp'] = isset($postData['create_webp']) && $postData['create_webp'] === 'true';

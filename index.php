@@ -1009,17 +1009,7 @@
                             </select>
                         </div>
 
-                        <div class="option-group">
-                            <label for="convertQuality">Quality (for lossy formats)</label>
-                            <div class="quality-slider">
-                                <input type="range" id="convertQuality" min="20" max="100" value="80">
-                                <div class="quality-labels">
-                                    <span>Small</span>
-                                    <span id="convertQualityValue">80%</span>
-                                    <span>Original</span>
-                                </div>
-                            </div>
-                        </div>
+                    
 
                         <div class="option-group">
                             <label>Additional Options</label>
@@ -1411,8 +1401,8 @@
             
             // Add options based on mode
             if (currentMode === 'optimize') {
-                // ΑΦΑΙΡΩ ΤΗΝ ΑΝΑΦΟΡΑ ΣΤΟ quality slider
-                formData.append('quality', 80); // Default value
+                
+                formData.append('quality', 100); 
                 
                 const maxWidth = document.getElementById('maxWidth');
                 if (maxWidth && maxWidth.value) {
@@ -1437,7 +1427,7 @@
                 if (outputFormat) formData.append('output_format', outputFormat.value);
                 
                 const convertQuality = document.getElementById('convertQuality');
-                formData.append('quality', convertQuality ? convertQuality.value : 80);
+                formData.append('quality', convertQuality ? convertQuality.value : 100);
                 
                 const convertThumbnail = document.getElementById('convertThumbnail');
                 if (convertThumbnail) formData.append('create_thumbnail', convertThumbnail.checked);
