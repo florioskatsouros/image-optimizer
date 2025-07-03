@@ -783,6 +783,11 @@ class ImageOptimizer
             error_log("Failed to create ICO file: " . $e->getMessage());
             throw $e;
         }
+        if (!file_exists($outputPath) || filesize($outputPath) == 0) {
+            throw new Exception('ICO file was not created properly');
+        }
+        
+        return true;
     }
     
     /**

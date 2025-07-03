@@ -949,21 +949,7 @@
                     <input type="file" id="fileInput" multiple accept="image/*,.heic,.heif,.psd,.raw,.cr2,.nef,.orf,.arw,.dng,.tiff,.tif" hidden>
                 </div>
 
-                <!-- Optimize Options Panel -->
-                <div class="options-panel" id="optimizePanel">
-                    <h3>⚡ Optimization Options</h3>
-                    <div class="options-grid">
-                        <div class="option-group">
-                            <label for="quality">Quality</label>
-                            <div class="quality-slider">
-                                <input type="range" id="quality" min="20" max="100" value="80">
-                                <div class="quality-labels">
-                                    <span>Small</span>
-                                    <span id="qualityValue">80%</span>
-                                    <span>Original</span>
-                                </div>
-                            </div>
-                        </div>
+                
 
                         <div class="option-group">
                             <label for="maxWidth">Max Width (optional)</label>
@@ -985,10 +971,7 @@
                                     <input type="checkbox" id="createWebp" checked>
                                     <span>WebP (25-35% smaller)</span>
                                 </label>
-                                <label class="checkbox">
-                                    <input type="checkbox" id="createAvif">
-                                    <span>AVIF (50% smaller) <span class="format-badge experimental">Beta</span></span>
-                                </label>
+                                
                                 <label class="checkbox">
                                     <input type="checkbox" id="createThumbnail" checked>
                                     <span>Thumbnail (300x300)</span>
@@ -1039,10 +1022,7 @@
                         <div class="option-group">
                             <label>Additional Options</label>
                             <div class="checkbox-group">
-                                <label class="checkbox">
-                                    <input type="checkbox" id="convertMultiple">
-                                    <span>Create multiple formats</span>
-                                </label>
+                                
                                 <label class="checkbox">
                                     <input type="checkbox" id="convertThumbnail">
                                     <span>Create thumbnail</span>
