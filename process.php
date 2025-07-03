@@ -51,56 +51,29 @@ try {
     // Get mode (optimize or convert)
     $mode = $_POST['mode'] ?? 'optimize';
     
-    // Get optimization options with validation
-    $options = [
-        'mode' => $mode,
-        'quality' => isset($_POST['quality']) ? max(20, min(100, (int)$_POST['quality'])) : 80,
-        'max_width' => isset($_POST['max_width']) && !empty($_POST['max_width']) ? max(100, min(8000, (int)$_POST['max_width'])) : null,
-        'max_height' => isset($_POST['max_height']) && !empty($_POST['max_height']) ? max(100, min(8000, (int)$_POST['max_height'])) : null,
-        'create_webp' => isset($_POST['create_webp']) && $_POST['create_webp'] === 'true',
-        'create_avif' => isset($_POST['create_avif']) && $_POST['create_avif'] === 'true',
-        'create_thumbnail' => isset($_POST['create_thumbnail']) && $_POST['create_thumbnail'] === 'true'
-    ];
-
-    // Handle conversion mode options
+    // FIXED: Better validation for convert mode
     if ($mode === 'convert') {
-        // Convert mode specific options
-        $options = [
-            'mode' => $mode,
-            'quality' => isset($_POST['quality']) ? max(20, min(100, (int)$_POST['quality'])) : 80,
-            'create_thumbnail' => isset($_POST['create_thumbnail']) && $_POST['create_thumbnail'] === 'true'
-        ];
+        // Check if we have valid output format
+        $hasValidOutputFormat = false;
         
-        // Handle multiple format conversion
-        if (isset($_POST['convert_to'])) {
+        if (isset($_POST['output_format']) && !empty($_POST['output_format'])) {
+            $hasValidOutputFormat = true;
+        }
+        
+        if (isset($_POST['convert_to']) && !empty($_POST['convert_to'])) {
             $convertTo = json_decode($_POST['convert_to'], true);
             if (is_array($convertTo) && !empty($convertTo)) {
-                $options['convert_to'] = $convertTo;
+                $hasValidOutputFormat = true;
             }
         }
         
-        // Handle single format conversion
-        if (isset($_POST['output_format']) && !empty($_POST['output_format'])) {
-            $options['output_format'] = $_POST['output_format'];
+        if (!$hasValidOutputFormat) {
+            throw new Exception('No valid output format specified for conversion');
         }
-        
-        // Check if we have a valid conversion target
-        if (empty($options['convert_to']) && empty($options['output_format'])) {
-            throw new Exception('No output format specified for conversion');
-        }
-        
-    } else {
-        // Optimize mode (existing logic)
-        $options = [
-            'mode' => $mode,
-            'quality' => isset($_POST['quality']) ? max(20, min(100, (int)$_POST['quality'])) : 80,
-            'max_width' => isset($_POST['max_width']) && !empty($_POST['max_width']) ? max(100, min(8000, (int)$_POST['max_width'])) : null,
-            'max_height' => isset($_POST['max_height']) && !empty($_POST['max_height']) ? max(100, min(8000, (int)$_POST['max_height'])) : null,
-            'create_webp' => isset($_POST['create_webp']) && $_POST['create_webp'] === 'true',
-            'create_avif' => isset($_POST['create_avif']) && $_POST['create_avif'] === 'true',
-            'create_thumbnail' => isset($_POST['create_thumbnail']) && $_POST['create_thumbnail'] === 'true'
-        ];
     }
+    
+    // Get optimization options with validation
+    $options = buildProcessingOptions($mode, $_POST);
 
     // Initialize optimizer
     $optimizer = new ImageOptimizer();
@@ -155,9 +128,9 @@ try {
             ]
         ];
 
-        // Generate download links
+        // FIXED: Better download link generation
         foreach ($result['optimized'] as $optimized) {
-            $response['data']['download_links'][] = [
+            $downloadLink = [
                 'format' => $optimized['format'],
                 'filename' => $optimized['filename'],
                 'size' => $optimized['size_human'],
@@ -165,6 +138,15 @@ try {
                 'url' => 'download.php?file=' . urlencode($optimized['filename']),
                 'is_conversion' => $optimized['is_conversion'] ?? false
             ];
+            
+            // FIXED: Handle special cases like thumbnails and ICO files
+            if ($optimized['format'] === 'thumbnail') {
+                $downloadLink['savings'] = 'thumbnail';
+            } elseif ($optimized['format'] === 'ico') {
+                $downloadLink['savings'] = 'converted';
+            }
+            
+            $response['data']['download_links'][] = $downloadLink;
         }
 
     } else {
@@ -172,7 +154,7 @@ try {
         $batchResult = $optimizer->optimizeBatch($files, $options);
         
         if (!$batchResult['success']) {
-            throw new Exception('Batch processing failed');
+            throw new Exception('Batch processing failed: ' . implode(', ', $batchResult['errors'] ?? []));
         }
         
         $response = [
@@ -207,6 +189,13 @@ try {
                         'url' => 'download.php?file=' . urlencode($optimized['filename']),
                         'is_conversion' => $optimized['is_conversion'] ?? false
                     ];
+                    
+                    // FIXED: Handle special cases
+                    if ($optimized['format'] === 'thumbnail') {
+                        $downloadLink['savings'] = 'thumbnail';
+                    } elseif (in_array($optimized['format'], ['ico', 'bmp', 'tiff'])) {
+                        $downloadLink['savings'] = 'converted';
+                    }
                     
                     $fileData['download_links'][] = $downloadLink;
                     $response['data']['download_links'][] = $downloadLink;
@@ -324,6 +313,48 @@ try {
     logProcessing("FATAL ERROR: " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine(), 'FATAL');
     
     echo json_encode($fatalResponse, JSON_PRETTY_PRINT);
+}
+
+/**
+ * FIXED: Build processing options based on mode
+ */
+function buildProcessingOptions($mode, $postData) {
+    $options = ['mode' => $mode];
+    
+    if ($mode === 'convert') {
+        // Handle conversion options
+        $options['quality'] = isset($postData['quality']) ? max(20, min(100, (int)$postData['quality'])) : 80;
+        $options['create_thumbnail'] = isset($postData['create_thumbnail']) && $postData['create_thumbnail'] === 'true';
+        
+        // Handle multiple format conversion
+        if (isset($postData['convert_to']) && !empty($postData['convert_to'])) {
+            $convertTo = json_decode($postData['convert_to'], true);
+            if (is_array($convertTo) && !empty($convertTo)) {
+                $options['convert_to'] = $convertTo;
+            }
+        }
+        
+        // Handle single format conversion
+        if (isset($postData['output_format']) && !empty($postData['output_format'])) {
+            $options['output_format'] = $postData['output_format'];
+        }
+        
+        // Handle multiple format toggle
+        if (isset($postData['convert_multiple']) && $postData['convert_multiple'] === 'true') {
+            $options['convert_multiple'] = true;
+        }
+        
+    } else {
+        // Optimize mode options
+        $options['quality'] = isset($postData['quality']) ? max(20, min(100, (int)$postData['quality'])) : 80;
+        $options['max_width'] = isset($postData['max_width']) && !empty($postData['max_width']) ? max(100, min(8000, (int)$postData['max_width'])) : null;
+        $options['max_height'] = isset($postData['max_height']) && !empty($postData['max_height']) ? max(100, min(8000, (int)$postData['max_height'])) : null;
+        $options['create_webp'] = isset($postData['create_webp']) && $postData['create_webp'] === 'true';
+        $options['create_avif'] = isset($postData['create_avif']) && $postData['create_avif'] === 'true';
+        $options['create_thumbnail'] = isset($postData['create_thumbnail']) && $postData['create_thumbnail'] === 'true';
+    }
+    
+    return $options;
 }
 
 /**

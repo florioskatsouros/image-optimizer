@@ -3,7 +3,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 
-require_once '../vendor/autoload.php';
+// FIXED: Correct path to autoload
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use ImageOptimizer\ImageOptimizer;
 
@@ -47,12 +48,20 @@ try {
     http_response_code(500);
     echo json_encode([
         'success' => false,
-        'error' => $e->getMessage()
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString()
+    ]);
+} catch (Error $e) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Fatal error: ' . $e->getMessage(),
+        'trace' => $e->getTraceAsString()
     ]);
 }
 
 /**
- * Group formats by category - Fixed function declaration
+ * Group formats by category - FIXED function
  */
 function groupFormatsByCategory($formatDetails) {
     $categories = [];

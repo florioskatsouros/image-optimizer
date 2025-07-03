@@ -114,6 +114,11 @@ class ImageOptimizer
             $supported[] = 'bmp';
         }
         
+        // ICO support - FIXED: Better detection
+        if ($this->hasImageMagickFormat('ICO') || class_exists('Imagick')) {
+            $supported[] = 'ico';
+        }
+        
         // SVG support (basic - will convert to raster)
         if ($this->hasImageMagickFormat('SVG') || class_exists('DOMDocument')) {
             $supported[] = 'svg';
@@ -325,7 +330,7 @@ class ImageOptimizer
     }
 
     /**
-     * Enhanced optimization with convert mode support
+     * Enhanced optimization with convert mode support - FIXED
      */
     public function optimizeImage($file, $options = [])
     {
@@ -386,7 +391,9 @@ class ImageOptimizer
             unlink($originalPath);
 
             // Get best savings percentage
-            $savingsValues = array_filter(array_column($results, 'savings'), 'is_numeric');
+            $savingsValues = array_filter(array_column($results, 'savings'), function($value) {
+                return is_numeric($value);
+            });
             $bestSavings = !empty($savingsValues) ? max($savingsValues) : 0;
 
             return [
@@ -413,7 +420,7 @@ class ImageOptimizer
     }
 
     /**
-     * Handle convert mode processing
+     * Handle convert mode processing - FIXED
      */
     private function handleConvertMode($image, $filename, $options, $originalSize)
     {
@@ -490,7 +497,7 @@ class ImageOptimizer
     }
     
     /**
-     * Batch optimization with detailed progress tracking
+     * Batch optimization with detailed progress tracking - FIXED
      */
     public function optimizeBatch($files, $options = [])
     {
@@ -652,7 +659,7 @@ class ImageOptimizer
     }
     
     /**
-     * Save optimized image with format-specific settings
+     * Save optimized image with format-specific settings - FIXED
      */
     private function saveOptimizedImage($image, $filename, $format, $quality, $originalSize, $isConversion = false)
     {
@@ -698,18 +705,33 @@ class ImageOptimizer
                     $outputImage->encode('tiff', $quality);
                     break;
                     
+                case 'ico':
+                    // FIXED: Better ICO handling
+                    if (class_exists('Imagick')) {
+                        $this->createICOFile($outputImage, $optimizedPath);
+                    } else {
+                        // Fallback to PNG
+                        $outputImage->encode('png');
+                        $optimizedPath = str_replace('.ico', '.png', $optimizedPath);
+                        $format = 'png';
+                    }
+                    break;
+                    
                 default:
                     $outputImage->encode($format, $quality);
             }
             
-            $outputImage->save($optimizedPath);
+            // Save the image if not already saved (like ICO)
+            if ($format !== 'ico' || !class_exists('Imagick')) {
+                $outputImage->save($optimizedPath);
+            }
             
             $optimizedSize = filesize($optimizedPath);
-            $savings = round((($originalSize - $optimizedSize) / $originalSize) * 100, 1);
+            $savings = $originalSize > 0 ? round((($originalSize - $optimizedSize) / $originalSize) * 100, 1) : 0;
             
             return [
                 'format' => $format,
-                'filename' => $filename . $suffix . '.' . $format,
+                'filename' => basename($optimizedPath),
                 'path' => $optimizedPath,
                 'size' => $optimizedSize,
                 'size_human' => $this->formatBytes($optimizedSize),
@@ -720,6 +742,46 @@ class ImageOptimizer
         } catch (Exception $e) {
             error_log("Failed to save {$format} image: " . $e->getMessage());
             return null;
+        }
+    }
+    
+    /**
+     * Create ICO file using ImageMagick - FIXED
+     */
+    private function createICOFile($image, $outputPath)
+    {
+        if (!class_exists('Imagick')) {
+            throw new Exception('ICO creation requires ImageMagick');
+        }
+        
+        try {
+            // Get the image data
+            $imageData = $image->encode('png')->getEncoded();
+            
+            // Create Imagick instance from PNG data
+            $imagick = new \Imagick();
+            $imagick->readImageBlob($imageData);
+            
+            // Resize to common ICO sizes and create multi-size ICO
+            $sizes = [16, 32, 48, 64, 128, 256];
+            $ico = new \Imagick();
+            
+            foreach ($sizes as $size) {
+                $resized = clone $imagick;
+                $resized->resizeImage($size, $size, \Imagick::FILTER_LANCZOS, 1);
+                $resized->setImageFormat('ico');
+                $ico->addImage($resized);
+                $resized->destroy();
+            }
+            
+            // Write the ICO file
+            $ico->writeImages($outputPath, true);
+            $ico->destroy();
+            $imagick->destroy();
+            
+        } catch (Exception $e) {
+            error_log("Failed to create ICO file: " . $e->getMessage());
+            throw $e;
         }
     }
     
@@ -1099,7 +1161,7 @@ class ImageOptimizer
      */
     private function canConvertToFormat($format)
     {
-        $convertible = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'bmp', 'tiff', 'gif'];
+        $convertible = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'bmp', 'tiff', 'gif', 'ico'];
         return in_array($format, $convertible);
     }
 
