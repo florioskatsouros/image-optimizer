@@ -968,11 +968,6 @@
 
                         <div class="option-group">
                             <label>Output Formats</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox">
-                                    <input type="checkbox" id="createWebp" checked>
-                                    <span>WebP (25-35% smaller)</span>
-                                </label>
                                 
                                 <label class="checkbox">
                                     <input type="checkbox" id="createThumbnail" checked>
@@ -1001,10 +996,6 @@
                                 <optgroup label="Print Formats">
                                     <option value="tiff">TIFF (.tiff)</option>
                                     <option value="bmp">Bitmap (.bmp)</option>
-                                </optgroup>
-                                <optgroup label="Other">
-                                    <option value="gif">GIF (.gif)</option>
-                                    <option value="ico">Icon (.ico)</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -1743,7 +1734,7 @@
         }
 
         // Initialize quality displays
-        updateQualityDisplay();
+        //updateQualityDisplay();
         updateConvertQualityDisplay();
     </script>
 </body>

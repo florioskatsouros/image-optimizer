@@ -91,7 +91,7 @@ class ImageOptimizerApp {
         const categories = {
             'Web Formats': ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'],
             'Print Formats': ['tiff', 'tif', 'bmp'],
-            'Other Formats': ['ico']
+            
         };
 
         Object.entries(categories).forEach(([categoryName, formats]) => {
