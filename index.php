@@ -155,6 +155,68 @@
         }
 
         /* ============================================
+        📐 Container Width Matching
+        ============================================ */
+
+        /* Ensure upload section and options panels have same max width */
+        .upload-section,
+        .options-panel,
+        .convert-panel {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Override existing options-panel margin settings */
+        .options-panel {
+            margin-top: var(--space-xl) !important;
+            margin-bottom: 0 !important;
+        }
+
+        .convert-panel {
+            margin-top: var(--space-lg) !important;
+            margin-bottom: 0 !important;
+        }
+
+        /* Ensure consistent padding */
+        .upload-section {
+            padding: var(--space-2xl);
+        }
+
+        .options-panel,
+        .convert-panel {
+            padding: var(--space-xl);
+        }
+
+        /* Make sure the upload zone doesn't exceed the container */
+        .upload-zone {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .upload-section,
+            .options-panel,
+            .convert-panel {
+                padding-left: var(--space-md);
+                padding-right: var(--space-md);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .upload-section,
+            .options-panel,
+            .convert-panel {
+                margin-left: -var(--space-md);
+                margin-right: -var(--space-md);
+                border-radius: 0;
+            }
+        }
+
+        /* ============================================
            📤 Main Content
            ============================================ */
 
@@ -968,7 +1030,7 @@
 
                         <div class="option-group">
                             <label>Output Formats</label>
-                                
+                            <div class="checkbox-group">
                                 <label class="checkbox">
                                     <input type="checkbox" id="createThumbnail" checked>
                                     <span>Thumbnail (300x300)</span>
@@ -1735,7 +1797,7 @@
 
         // Initialize quality displays
         //updateQualityDisplay();
-        updateConvertQualityDisplay();
+        //updateConvertQualityDisplay();
     </script>
 </body>
 </html>
